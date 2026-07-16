@@ -1,0 +1,57 @@
+# ============================================================
+# 晨昕診所 內容後台設定
+# 部署時只需要改兩處（見 部署說明.md 步驟四）：
+#   1. repo:     改成你的 GitHub 帳號/repo 名稱
+#   2. base_url: 改成你部署的 OAuth Worker 網址
+# ============================================================
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/chenxin-clinic-site   # ← 改這裡
+  branch: main
+  base_url: https://YOUR-AUTH-WORKER.workers.dev    # ← 改這裡
+
+site_url: https://YOUR-SITE.pages.dev
+locale: zh-Hant
+
+media_folder: "images/uploads"   # 圖片上傳後存放的位置
+public_folder: "/images/uploads"
+
+collections:
+  # ---------- 診所公告 ----------
+  - name: "announcements"
+    label: "診所公告"
+    files:
+      - name: "announcements"
+        label: "公告列表"
+        file: "content/announcements.json"
+        fields:
+          - label: "公告"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}（{{fields.date}}）"
+            fields:
+              - { label: "標題", name: "title", widget: "string" }
+              - { label: "公告日期", name: "date", widget: "string", hint: "格式：2026-07-07" }
+              - { label: "內容", name: "body", widget: "text" }
+              - { label: "顯示在首頁", name: "show", widget: "boolean", default: true, hint: "關閉即下架，不用刪除" }
+
+  # ---------- 健康新知 ----------
+  - name: "articles"
+    label: "健康新知"
+    label_singular: "文章"
+    folder: "content/articles"
+    create: true
+    slug: "{{fields.date}}-{{slug}}"
+    summary: "{{title}}（{{category}}｜{{date}}）"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "發布日期", name: "date", widget: "string", hint: "格式：2026-07-14" }
+      - label: "分類"
+        name: "category"
+        widget: "select"
+        options: ["慢病體重管理", "身心科"]
+        hint: "需要新分類時，請聯絡網站管理員在此設定檔加一行即可"
+      - { label: "作者", name: "author", widget: "string", default: "李泳姿 院長" }
+      - { label: "摘要", name: "excerpt", widget: "text", hint: "顯示在文章列表卡片上的簡短介紹" }
+      - { label: "封面圖", name: "thumbnail", widget: "image", required: false }
+      - { label: "內文", name: "body", widget: "markdown" }
