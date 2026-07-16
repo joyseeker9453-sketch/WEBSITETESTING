@@ -8,9 +8,11 @@ backend:
   name: github
   repo: joyseeker9453-sketch/WEBSITETESTING
   branch: main
-  base_url: https://uploadcontent.joyseeker9453.workers.dev  # 已換成你剛剛成功設定好的 Cloudflare Worker 網址
+  base_url: https://uploadcontent.joyseeker9453.workers.dev
+  auth_endpoint: auth
 
-site_url: https://leiclinicdemo.joyseeker9453.workers.dev  # 已換成你診所首頁的正式網址
+site_url: https://leiclinicdemo.joyseeker9453.workers.dev
+display_url: https://leiclinicdemo.joyseeker9453.workers.dev
 locale: zh-Hant
 
 media_folder: "images/uploads"   # 圖片上傳後存放的位置
