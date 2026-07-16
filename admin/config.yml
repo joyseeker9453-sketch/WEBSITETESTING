@@ -6,7 +6,7 @@
 # ============================================================
 backend:
   name: github
-  repo: joyseeker9453-sketch/chenxin-clinic-site  # 輕輕鬆鬆，已幫你換成你的 GitHub 帳號
+  repo: joyseeker9453-sketch/WEBSITETESTING
   branch: main
   base_url: https://uploadcontent.joyseeker9453.workers.dev  # 已換成你剛剛成功設定好的 Cloudflare Worker 網址
 
