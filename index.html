@@ -145,7 +145,10 @@ section{padding:72px 0}
 .doc li{padding:3px 0;border-bottom:1px dashed var(--line)}
 @media(max-width:820px){.team-grid{grid-template-columns:1fr}}
 
-.cat-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.cat-bar{display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.cat-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cat-row-top{justify-content:center}
+.cat-row-bottom{justify-content:flex-start}
 .cat-btn{padding:8px 22px;border-radius:22px;border:1.5px solid var(--pine);background:#fff;color:var(--pine);font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:.2s}
 .cat-more{position:relative;display:inline-block}
 .cat-menu{display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 28px rgba(28,74,67,.16);padding:6px;z-index:20;min-width:150px}
@@ -465,19 +468,23 @@ function renderCats(){
   const sorted = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
   const top = sorted.slice(0,3);
   const rest = sorted.slice(3);
+  const picked = rest.includes(currentCat);
 
-  let html = `<button class="cat-btn ${currentCat==='全部'?'active':''}" onclick="filterCat('全部')">全部</button>`;
-  html += top.map(c=>
+  // 上排：最熱門三個標籤（置中）
+  const topRow = top.map(c=>
     `<button class="cat-btn ${c===currentCat?'active':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</button>`).join('');
-  if(rest.length){
-    const picked = rest.includes(currentCat);
-    html += `<div class="cat-more">
+
+  // 下排：最左邊是「分類」下拉（含全部標籤選項），接著「全部」
+  const dropdown = `<div class="cat-more">
       <button class="cat-btn cat-more-btn ${picked?'active':''}">${picked?esc(currentCat):'分類'} ▾</button>
-      <div class="cat-menu">${rest.map(c=>
+      <div class="cat-menu">${sorted.map(c=>
         `<a class="${c===currentCat?'on':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</a>`).join('')}</div>
     </div>`;
-  }
-  $('cat-bar').innerHTML = html;
+  const allBtn = `<button class="cat-btn ${currentCat==='全部'?'active':''}" onclick="filterCat('全部')">全部</button>`;
+
+  $('cat-bar').innerHTML =
+    `<div class="cat-row cat-row-top">${topRow}</div>
+     <div class="cat-row cat-row-bottom">${dropdown}${allBtn}</div>`;
 }
 function filterCat(c){ currentCat=c; newsPage=1; renderCats(); renderNews(); }
 
