@@ -1,7 +1,8 @@
 ---
 title: 打猛健樂體重達標後，可以打較低劑量維持體重嗎？
 date: 2026-06-02
-category: 慢病體重管理
+category:
+  - 體重管理
 author: 李泳姿 院長
 excerpt: 總結來說，此試驗是第一個有實證醫學證據，探究使用腸泌素到體重達標後，維持高劑量和降低劑量，對於能保持減掉的體重和其他心血管代謝指標的獲益，還是比停藥來的好。
 thumbnail: /images/uploads/01KT38ZQYR2CBXN3MVXSNE7K65___webp_1920_1080.webp
