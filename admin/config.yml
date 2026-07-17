@@ -50,10 +50,27 @@ collections:
       - { label: "發布日期", name: "date", widget: "string", hint: "格式：2026-07-14" }
       - label: "分類"
         name: "category"
-        widget: "select"
-        options: ["慢病體重管理", "身心科"]
-        hint: "需要新分類時，請聯絡網站管理員在此設定檔加一行即可"
+        widget: "relation"
+        collection: "categories"
+        file: "categories"
+        search_fields: ["items.*.name"]
+        value_field: "items.*.name"
+        display_fields: ["items.*.name"]
       - { label: "作者", name: "author", widget: "string", default: "李泳姿 院長" }
       - { label: "摘要", name: "excerpt", widget: "text", hint: "顯示在文章列表卡片上的簡短介紹" }
       - { label: "封面圖", name: "thumbnail", widget: "image", required: false }
       - { label: "內文", name: "body", widget: "markdown" }
+  # ---------- 文章分類（後台直接新增，不用改設定檔） ----------
+  - name: "categories"
+    label: "文章分類"
+    files:
+      - name: "categories"
+        label: "分類清單"
+        file: "content/categories.json"
+        fields:
+          - label: "分類"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "名稱", name: "name", widget: "string" }
