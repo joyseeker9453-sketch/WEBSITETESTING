@@ -50,12 +50,29 @@ collections:
       - { label: "發布日期", name: "date", widget: "string", hint: "格式：2026-07-14" }
       - label: "分類（可複選，像 hashtag）"
         name: "category"
-        widget: "select"
+        widget: "relation"
+        collection: "categories"
+        file: "categories"
         multiple: true
         min: 1
-        options: ["慢病體重管理", "身心科", "糖尿病", "體重管理", "高血壓", "高血脂"]
-        hint: "一篇文章可同時勾選多個分類，例如同時勾「糖尿病」和「體重管理」"
+        search_fields: ["items.*.name"]
+        value_field: "items.*.name"
+        display_fields: ["items.*.name"]
+        hint: "可勾多個；要新增分類請到左側「文章分類」區新增"
       - { label: "作者", name: "author", widget: "string", default: "李泳姿 院長" }
       - { label: "摘要", name: "excerpt", widget: "text", hint: "顯示在文章列表卡片上的簡短介紹" }
       - { label: "封面圖", name: "thumbnail", widget: "image", required: false }
       - { label: "內文", name: "body", widget: "markdown" }
+  - name: "categories"
+    label: "文章分類"
+    files:
+      - name: "categories"
+        label: "分類清單"
+        file: "content/categories.json"
+        fields:
+          - label: "分類"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "名稱", name: "name", widget: "string" }     
