@@ -147,19 +147,30 @@ section{padding:72px 0}
 
 .cat-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
 .cat-btn{padding:8px 22px;border-radius:22px;border:1.5px solid var(--pine);background:#fff;color:var(--pine);font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:.2s}
+.cat-more{position:relative;display:inline-block}
+.cat-menu{display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 28px rgba(28,74,67,.16);padding:6px;z-index:20;min-width:150px}
+.cat-more:hover .cat-menu,.cat-more:focus-within .cat-menu{display:block}
+.cat-menu a{display:block;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:700;color:var(--pine);cursor:pointer;white-space:nowrap;text-align:center}
+.cat-menu a:hover,.cat-menu a.on{background:var(--pine);color:#fff}
+.news-pager{display:flex;gap:8px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.pg-btn{min-width:40px;height:40px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--pine);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:.2s}
+.pg-btn:hover:not(:disabled){border-color:var(--pine)}
+.pg-btn.active{background:var(--pine);color:#fff;border-color:var(--pine)}
+.pg-btn:disabled{opacity:.4;cursor:default}
 .cat-btn.active,.cat-btn:hover{background:var(--pine);color:#fff}
 .art-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
 @media(max-width:760px){.art-grid{grid-template-columns:1fr}}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;cursor:pointer;transition:.25s;display:flex;flex-direction:column;gap:10px}
 .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(28,74,67,.12)}
 .card img.thumb{border-radius:10px;margin:-8px -8px 4px;width:calc(100% + 16px);max-height:180px;object-fit:cover}
-.card .cat{align-self:flex-start;background:var(--dawn-soft);color:#9a6c1c;font-size:12.5px;font-weight:700;padding:3px 12px;border-radius:12px}
+.card .cats,.article-page .cats{display:flex;flex-wrap:wrap;gap:6px}
+.card .cat,.article-page .cat{background:var(--dawn-soft);color:#9a6c1c;font-size:12.5px;font-weight:700;padding:3px 12px;border-radius:12px}
 .card h3{font-family:var(--serif);font-size:19px;color:var(--pine-deep);line-height:1.5}
 .card p{font-size:14px;color:var(--ink-soft)}
 .card .meta{font-size:13px;color:#9aa5a0;margin-top:auto}
 
 .article-page{max-width:760px;margin:0 auto}
-.article-page .cat{display:inline-block;background:var(--dawn-soft);color:#9a6c1c;font-size:13px;font-weight:700;padding:4px 14px;border-radius:14px;margin-bottom:14px}
+.article-page .cats{margin-bottom:14px}
 .article-page h1{font-family:var(--serif);font-size:clamp(24px,4vw,34px);color:var(--pine-deep);line-height:1.5;margin-bottom:12px}
 .article-page .meta{color:#9aa5a0;font-size:14px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:26px}
 .article-body p{margin-bottom:18px;font-size:16.5px}
@@ -319,6 +330,7 @@ footer a{color:#e8efe9}
       <div class="sec-head"><span class="en">HEALTH NEWS</span><h2>健康新知</h2></div>
       <div class="cat-bar" id="cat-bar"></div>
       <div class="art-grid" id="news-grid"><div class="loading">載入中…</div></div>
+      <div class="news-pager" id="news-pager"></div>
     </div>
   </section>
 </div>
@@ -428,10 +440,18 @@ function renderNotices(items){
     </div>`).join('');
 }
 
+/* 相容處理：舊資料是單一 category 字串，新資料是 tags 陣列，統一成陣列 */
+function tagsOf(a){
+  if(Array.isArray(a.tags)) return a.tags.filter(Boolean);
+  if(Array.isArray(a.category)) return a.category.filter(Boolean);
+  return a.category ? [a.category] : [];
+}
+
 function cardHTML(a){
+  const tags = tagsOf(a);
   return `<div class="card" onclick="go('article',null,'${esc(a.slug)}')">
     ${a.thumbnail?`<img class="thumb" src="${esc(a.thumbnail)}" alt="" loading="lazy">`:''}
-    <span class="cat">${esc(a.category)}</span>
+    <div class="cats">${tags.map(t=>`<span class="cat">${esc(t)}</span>`).join('')}</div>
     <h3>${esc(a.title)}</h3>
     <p>${esc(a.excerpt)}</p>
     <div class="meta">${esc(a.author)}　·　${esc(a.date)}</div>
@@ -439,16 +459,45 @@ function cardHTML(a){
 }
 
 function renderCats(){
-  const cats = ["全部", ...new Set(ARTICLES.map(a=>a.category))];
-  $('cat-bar').innerHTML = cats.map(c=>
+  // 統計每個標籤的文章數，取最熱門三個當按鈕，其餘收進下拉選單
+  const counts = {};
+  ARTICLES.flatMap(tagsOf).forEach(t=>{ counts[t]=(counts[t]||0)+1; });
+  const sorted = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  const top = sorted.slice(0,3);
+  const rest = sorted.slice(3);
+
+  let html = `<button class="cat-btn ${currentCat==='全部'?'active':''}" onclick="filterCat('全部')">全部</button>`;
+  html += top.map(c=>
     `<button class="cat-btn ${c===currentCat?'active':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</button>`).join('');
+  if(rest.length){
+    const picked = rest.includes(currentCat);
+    html += `<div class="cat-more">
+      <button class="cat-btn cat-more-btn ${picked?'active':''}">${picked?esc(currentCat):'分類'} ▾</button>
+      <div class="cat-menu">${rest.map(c=>
+        `<a class="${c===currentCat?'on':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</a>`).join('')}</div>
+    </div>`;
+  }
+  $('cat-bar').innerHTML = html;
 }
-function filterCat(c){ currentCat=c; renderCats(); renderNews(); }
+function filterCat(c){ currentCat=c; newsPage=1; renderCats(); renderNews(); }
+
+const PER_PAGE = 9;
+let newsPage = 1;
 function renderNews(){
-  const list = currentCat==="全部" ? ARTICLES : ARTICLES.filter(a=>a.category===currentCat);
-  $('news-grid').innerHTML = list.length ? list.map(cardHTML).join('')
-    : '<p class="loading">此分類目前沒有文章。</p>';
+  const list = currentCat==="全部" ? ARTICLES : ARTICLES.filter(a=>tagsOf(a).includes(currentCat));
+  if(!list.length){ $('news-grid').innerHTML='<p class="loading">此標籤目前沒有文章。</p>'; $('news-pager').innerHTML=''; return; }
+  const pages = Math.ceil(list.length/PER_PAGE);
+  if(newsPage>pages) newsPage=pages;
+  const start=(newsPage-1)*PER_PAGE;
+  $('news-grid').innerHTML = list.slice(start,start+PER_PAGE).map(cardHTML).join('');
+  // 分頁列
+  if(pages<=1){ $('news-pager').innerHTML=''; return; }
+  let p = `<button class="pg-btn" ${newsPage===1?'disabled':''} onclick="gotoNews(${newsPage-1})">‹</button>`;
+  for(let i=1;i<=pages;i++) p += `<button class="pg-btn ${i===newsPage?'active':''}" onclick="gotoNews(${i})">${i}</button>`;
+  p += `<button class="pg-btn" ${newsPage===pages?'disabled':''} onclick="gotoNews(${newsPage+1})">›</button>`;
+  $('news-pager').innerHTML = p;
 }
+function gotoNews(p){ newsPage=p; renderNews(); document.getElementById('page-news').scrollIntoView({behavior:'smooth'}); }
 
 /* ---- 文章內頁 + 分享 ---- */
 function renderArticle(slug){
@@ -458,7 +507,7 @@ function renderArticle(slug){
   const encURL = encodeURIComponent(url);
   const encTitle = encodeURIComponent(a.title);
   $('article-box').innerHTML = `
-    <span class="cat">${esc(a.category)}</span>
+    <div class="cats">${tagsOf(a).map(t=>`<span class="cat">${esc(t)}</span>`).join('')}</div>
     <h1>${esc(a.title)}</h1>
     <div class="meta">${esc(a.author)}　·　建立日期：${esc(a.date)}</div>
     <div class="article-body">${a.html}</div>
