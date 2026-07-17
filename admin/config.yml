@@ -6,11 +6,13 @@
 # ============================================================
 backend:
   name: github
-  repo: YOUR_GITHUB_USERNAME/chenxin-clinic-site   # ← 改這裡
+   repo: joyseeker9453-sketch/WEBSITETESTING
   branch: main
-  base_url: https://YOUR-AUTH-WORKER.workers.dev    # ← 改這裡
+  base_url: https://uploadcontent.joyseeker9453.workers.dev
+  auth_endpoint: auth
 
-site_url: https://YOUR-SITE.pages.dev
+site_url: https://leiclinicdemo.joyseeker9453.workers.dev
+display_url: https://leiclinicdemo.joyseeker9453.workers.dev
 locale: zh-Hant
 
 media_folder: "images/uploads"   # 圖片上傳後存放的位置
