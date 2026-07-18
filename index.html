@@ -488,7 +488,7 @@ function renderCats(){
 }
 function filterCat(c){ currentCat=c; newsPage=1; renderCats(); renderNews(); }
 
-const PER_PAGE = 9;
+const PER_PAGE = 6;
 let newsPage = 1;
 function renderNews(){
   const list = currentCat==="全部" ? ARTICLES : ARTICLES.filter(a=>tagsOf(a).includes(currentCat));
