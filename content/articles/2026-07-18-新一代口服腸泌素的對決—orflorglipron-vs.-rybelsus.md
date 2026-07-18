@@ -3,7 +3,6 @@ title: 新一代口服腸泌素的對決—orflorglipron vs. Rybelsus
 date: 2026-07-18
 category:
   - 體重管理
-  - 第二型糖尿病
 author: 李泳姿 院長
 excerpt: 總結來講，此試驗證實了新一代小分子口腹腸泌素orflorglipron沒有劣於瑞倍適、甚至更優異。有望在未來對於第二型糖尿病病患，提供了在針劑以外更多口服藥的選擇。
 thumbnail: ''
