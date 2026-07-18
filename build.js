@@ -11,16 +11,35 @@ const ART_DIR = path.join(ROOT, 'content', 'articles');
 const DATA_DIR = path.join(ROOT, 'data');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
-/* ---------- frontmatter 解析 ---------- */
+/* ---------- frontmatter 解析（支援 YAML 列表） ---------- */
 function parseFrontmatter(raw) {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!m) return { meta: {}, body: raw };
   const meta = {};
-  for (const line of m[1].split(/\r?\n/)) {
+  const lines = m[1].split(/\r?\n/);
+  let curKey = null;   // 正在收集列表項目的 key
+  const unquote = s => s.trim().replace(/^["']|["']$/g, '');
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    // 列表項目：「  - 值」
+    const li = line.match(/^\s*-\s+(.*)$/);
+    if (li && curKey) {
+      if (!Array.isArray(meta[curKey])) meta[curKey] = [];
+      meta[curKey].push(unquote(li[1]));
+      continue;
+    }
     const i = line.indexOf(':');
     if (i === -1) continue;
     const key = line.slice(0, i).trim();
-    let val = line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+    let val = unquote(line.slice(i + 1));
+    if (val === '') {
+      // 冒號後空白 → 下面可能接列表項目
+      curKey = key;
+      meta[key] = '';
+      continue;
+    }
+    curKey = null;
     if (val === 'true') val = true;
     else if (val === 'false') val = false;
     meta[key] = val;
@@ -63,11 +82,20 @@ if (fs.existsSync(ART_DIR)) {
     const raw = fs.readFileSync(path.join(ART_DIR, f), 'utf8');
     const { meta, body } = parseFrontmatter(raw);
     const dateStr = String(meta.date || '').slice(0, 10);
+    // 分類支援多標籤：YAML 陣列 [a, b]、逗號分隔 "a, b"、或單一字串
+    let tags = [];
+    const cat = meta.category;
+    if (Array.isArray(cat)) tags = cat;
+    else if (typeof cat === 'string') {
+      const s = cat.trim().replace(/^\[|\]$/g, '');
+      tags = s.split(/[,、]/).map(t => t.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
+    }
+    if (!tags.length) tags = ['未分類'];
     articles.push({
       slug: f.replace(/\.md$/, ''),
       title: meta.title || f,
       date: dateStr,
-      category: meta.category || '未分類',
+      tags: tags,
       author: meta.author || '晨昕診所',
       excerpt: meta.excerpt || '',
       thumbnail: meta.thumbnail || '',
