@@ -37,6 +37,69 @@ collections:
               - { label: "內容", name: "body", widget: "text" }
               - { label: "顯示在首頁", name: "show", widget: "boolean", default: true, hint: "關閉即下架，不用刪除" }
 
+
+  # ---------- 診所資料（門診時間 / 醫療團隊 / 聯絡方式） ----------
+  - name: "site"
+    label: "診所資料"
+    files:
+      - name: "site"
+        label: "診所基本資料"
+        file: "content/site.json"
+        fields:
+          - { label: "診所名稱", name: "name", widget: "string" }
+          - { label: "網站網址", name: "baseUrl", widget: "string", hint: "例如 https://mdytcdemowebsite.com（結尾不要斜線）" }
+          - { label: "分享預覽圖", name: "ogImage", widget: "image", required: false, hint: "分享到 LINE/FB 時顯示的圖，建議 1200x630" }
+          - { label: "電話（顯示用）", name: "phone", widget: "string", hint: "例如 02-2518-1268" }
+          - { label: "電話（撥號用）", name: "phoneLink", widget: "string", hint: "只留數字，例如 0225181268" }
+          - { label: "地址", name: "address", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "線上預約連結", name: "booking", widget: "string" }
+          - { label: "LINE 加好友連結", name: "line", widget: "string" }
+          - { label: "Facebook 粉專連結", name: "facebook", widget: "string" }
+          - { label: "Google 地圖嵌入網址", name: "mapEmbed", widget: "text", hint: "Google 地圖 → 分享 → 嵌入地圖 → 複製 iframe 裡 src 的網址" }
+
+          - label: "服務項目"
+            name: "services"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "名稱", name: "name", widget: "string", hint: "名稱要和原本一致才會有對應圖示" }
+              - { label: "說明", name: "desc", widget: "text", required: false }
+
+          - label: "門診時間"
+            name: "hours"
+            widget: "object"
+            fields:
+              - { label: "備註", name: "note", widget: "string", required: false }
+              - { label: "特別說明", name: "extra", widget: "text", required: false }
+              - label: "時段"
+                name: "rows"
+                widget: "list"
+                summary: "{{fields.slot}} {{fields.time}}"
+                fields:
+                  - { label: "時段名稱", name: "slot", widget: "string", hint: "上午 / 下午 / 晚上" }
+                  - { label: "時間", name: "time", widget: "string", hint: "例如 09:00–12:30" }
+                  - { label: "週一", name: "mon", widget: "string", required: false, hint: "填醫師姓名，休診請填「休診」" }
+                  - { label: "週二", name: "tue", widget: "string", required: false }
+                  - { label: "週三", name: "wed", widget: "string", required: false }
+                  - { label: "週四", name: "thu", widget: "string", required: false }
+                  - { label: "週五", name: "fri", widget: "string", required: false }
+                  - { label: "週六", name: "sat", widget: "string", required: false }
+                  - { label: "週日", name: "sun", widget: "string", required: false }
+
+          - label: "醫療團隊"
+            name: "team"
+            widget: "list"
+            summary: "{{fields.name}}（{{fields.title}}）"
+            fields:
+              - { label: "姓名", name: "name", widget: "string" }
+              - { label: "職稱", name: "title", widget: "string" }
+              - { label: "照片", name: "photo", widget: "image", required: false }
+              - label: "學經歷"
+                name: "creds"
+                widget: "list"
+                field: { label: "一條學經歷", name: "cred", widget: "string" }
+
   # ---------- 健康新知 ----------
   - name: "articles"
     label: "健康新知"
