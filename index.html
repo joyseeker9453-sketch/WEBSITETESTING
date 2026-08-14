@@ -119,12 +119,12 @@ section{padding:72px 0}
 @media(max-width:760px){.about-grid{grid-template-columns:1fr}.about-right p{margin-top:0}}
 
 .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.svc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 18px;transition:.25s}
-.svc:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(28,74,67,.12);border-color:var(--pine)}
-.svc .icon{width:56px;height:56px;background:var(--dawn-soft);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.svc .icon svg{width:38px;height:38px}
-.svc h3{font-family:var(--serif);font-size:18px;color:var(--pine);margin-bottom:8px}
-.svc p{font-size:13.5px;color:var(--ink-soft);line-height:1.65}
+.svc{background:transparent;border:0;border-radius:14px;padding:14px 10px;text-align:center;transition:.25s}
+.svc:hover{transform:translateY(-4px)}
+.svc:hover .icon{box-shadow:0 12px 28px rgba(28,74,67,.14)}
+.svc .icon{width:96px;height:96px;background:var(--dawn-soft);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:.25s}
+.svc .icon svg{width:56px;height:56px}
+.svc h3{font-family:var(--serif);font-size:19px;color:var(--pine-deep);margin-bottom:0}
 @media(max-width:900px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.svc-grid{grid-template-columns:1fr}}
 
@@ -390,7 +390,7 @@ function initStatic(){
   if(SITE.line){ lb.href = SITE.line; } else { lb.removeAttribute('target'); lb.onclick = e => e.preventDefault(); }
 
   $('svc-grid').innerHTML = SITE.services.map(s=>
-    `<div class="svc"><div class="icon">${SVC_ICONS[s.name]||''}</div><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div>`).join('');
+    `<div class="svc"><div class="icon">${SVC_ICONS[s.name]||''}</div><h3>${esc(s.name)}</h3></div>`).join('');
 
   $('hours-body').innerHTML = SITE.hours.rows.map(r=>
     `<tr><td class="slot">${esc(r.slot)}<br><small>${esc(r.time)}</small></td>`+
@@ -488,7 +488,7 @@ function renderCats(){
 }
 function filterCat(c){ currentCat=c; newsPage=1; renderCats(); renderNews(); }
 
-const PER_PAGE = 6;
+const PER_PAGE = 9;
 let newsPage = 1;
 function renderNews(){
   const list = currentCat==="全部" ? ARTICLES : ARTICLES.filter(a=>tagsOf(a).includes(currentCat));
