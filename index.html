@@ -146,7 +146,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(251,250,247,.94);backdro
 }
 
 .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#f2f6f3 0%,var(--paper) 78%)}
-.hero .wrap{padding:28px 20px 88px;text-align:center;position:relative;z-index:1}
+.hero .wrap{padding:28px 20px 90px;text-align:center;position:relative;z-index:1}
 .hero .eyebrow{display:inline-block;font-size:13px;letter-spacing:4px;color:var(--dawn);font-weight:700;margin-bottom:14px}
 .hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,52px);color:var(--pine-deep);letter-spacing:4px;margin-bottom:18px}
 .hero p{max-width:620px;margin:0 auto 30px;color:var(--ink-soft)}
@@ -163,7 +163,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(251,250,247,.94);backdro
 .notice h3{font-size:16px;color:var(--pine-deep)}
 .notice small{color:var(--ink-soft)}
 
-section{padding:72px 0}
+section{padding:44px 0}
 .sec-head{text-align:center;margin-bottom:44px}
 .sec-head .en{font-size:12px;letter-spacing:4px;color:var(--dawn);font-weight:700}
 .sec-head h2{font-family:var(--serif);font-weight:900;font-size:30px;color:var(--pine-deep);letter-spacing:3px;margin-top:6px}
@@ -276,6 +276,7 @@ footer a{color:#e8efe9}
 .btn-lg{font-size:17px;padding:15px 44px}
 .cs-phone{display:block;margin-top:12px;font-family:var(--serif);font-size:30px;font-weight:700;color:var(--pine-deep);letter-spacing:1px;text-decoration:none}
 .cs-phone:hover{color:var(--pine)}
+.btn-sub{margin-top:9px;font-size:14px;color:var(--ink-soft)}
 .cs-addr{margin-top:8px;font-size:16px;color:var(--ink-soft)}
 .cs-ico{font-size:.72em;margin-right:8px;vertical-align:2px}
 @media(max-width:860px){
@@ -316,7 +317,7 @@ footer a{color:#e8efe9}
     <div class="horizon"></div>
     <div class="wrap">
       <div class="contact-strip">
-        <a class="btn btn-solid btn-lg" id="hero-booking" href="#" target="_blank" rel="noopener">線上預約看診</a>
+        <a class="btn btn-solid btn-lg" id="hero-booking" href="#" target="_blank" rel="noopener">預約看診</a>
         <a class="cs-phone" id="cs-phone" href="#"><span class="cs-ico">📞</span><span id="cs-phone-txt"></span></a>
         <div class="cs-addr"><span class="cs-ico">📍</span><span id="cs-addr-txt"></span></div>
       </div>
@@ -363,7 +364,10 @@ footer a{color:#e8efe9}
       </div>
       <p class="hours-note" id="hours-note"></p>
       <p class="hours-note" id="hours-extra" style="color:var(--pine);font-weight:500"></p>
-      <p style="text-align:center;margin-top:22px"><a class="btn btn-solid" id="hours-booking" href="#" target="_blank" rel="noopener">預約掛號</a></p>
+      <div style="text-align:center;margin-top:22px">
+        <a class="btn btn-solid" id="hours-booking" href="#" target="_blank" rel="noopener">預約看診</a>
+        <p class="btn-sub">線上選擇看診時段</p>
+      </div>
     </div>
   </section>
 
