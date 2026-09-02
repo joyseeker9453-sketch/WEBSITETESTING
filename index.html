@@ -252,11 +252,10 @@ footer a{color:#e8efe9}
     <div class="horizon"></div>
     <div class="wrap">
       <a class="line-banner" id="line-banner" href="#" target="_blank" rel="noopener"><img src="images/line-banner.png" alt="加入晨昕診所 LINE 好友" loading="lazy"></a>
+      <div style="text-align:center;margin:8px 0 26px"><a class="btn btn-solid btn-big" id="hero-booking" href="#" target="_blank" rel="noopener">預約看診日期</a></div>
       <span class="eyebrow">DR. JENNY LEI'S CLINIC</span>
       <h1>用心守護您的健康</h1>
       <p>晨昕診所秉持「以人為本」的精神，在專業醫師的帶領下，持續實踐最優質的醫療技術與最貼心的人性化服務。無論是慢性醫療或保健需求，我們用心聆聽每一位患者。</p>
-      <a class="btn btn-solid" id="hero-booking" href="#" target="_blank" rel="noopener">線上預約看診</a>
-      <a class="btn btn-ghost" onclick="go('news')">健康新知</a>
     </div>
   </div>
 
@@ -296,7 +295,6 @@ footer a{color:#e8efe9}
       </div>
       <p class="hours-note" id="hours-note"></p>
       <p class="hours-note" id="hours-extra" style="color:var(--pine);font-weight:500"></p>
-      <p style="text-align:center;margin-top:22px"><a class="btn btn-solid" id="hours-booking" href="#" target="_blank" rel="noopener">預約掛號</a></p>
     </div>
   </section>
 
@@ -324,7 +322,6 @@ footer a{color:#e8efe9}
           <p><strong>地址：</strong><span id="c-addr"></span></p>
           <p><strong>電話：</strong><a id="c-phone" href="#"></a></p>
           <p><strong>Email：</strong><span id="c-mail"></span></p>
-          <p style="margin-top:18px"><a class="btn btn-solid btn-big" id="c-booking" href="#" target="_blank" rel="noopener">預約看診日期</a></p>
         </div>
         <div class="mapbox"><iframe id="c-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="晨昕診所地圖"></iframe></div>
       </div>
@@ -387,7 +384,7 @@ function esc(s){const d=document.createElement('div');d.textContent=s==null?'':S
 function initStatic(){
   $('tb-phone').href = 'tel:'+SITE.phoneLink; $('tb-phone').textContent = SITE.phone;
   $('tb-fb').href = SITE.facebook;
-  $('hero-booking').href = $('hours-booking').href = $('c-booking').href = $('f-booking').href = SITE.booking;
+  $('hero-booking').href = $('f-booking').href = SITE.booking;
   $('c-addr').textContent = $('f-addr').textContent = SITE.address;
   $('c-phone').href='tel:'+SITE.phoneLink; $('c-phone').textContent=SITE.phone;
   $('c-mail').textContent = SITE.email;
