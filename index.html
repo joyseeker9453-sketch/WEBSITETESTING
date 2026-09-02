@@ -5,113 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>晨昕診所｜台北市中山區內科・糖尿病・慢病體重管理</title>
 <meta name="description" content="晨昕診所-中山內科診所｜糖尿病治療｜家醫科｜高血壓高血脂｜慢病體重管理｜身心科">
-<link rel="canonical" href="https://mdytcdemowebsite.com/">
-<meta property="og:type" content="website">
 <meta property="og:site_name" content="晨昕診所">
-<meta property="og:title" content="晨昕診所｜台北市中山區內科・糖尿病・慢病體重管理">
+<meta property="og:title" content="晨昕診所">
 <meta property="og:description" content="糖尿病共照網認證機構｜慢病體重管理｜身心科門診">
-<meta property="og:url" content="https://mdytcdemowebsite.com/">
-<meta property="og:image" content="https://mdytcdemowebsite.com/images/line-banner.png">
-<meta property="og:locale" content="zh_TW">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/logo.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MedicalClinic",
-  "name": "晨昕診所",
-  "url": "https://mdytcdemowebsite.com/",
-  "logo": "https://mdytcdemowebsite.com/images/logo.png",
-  "image": "https://mdytcdemowebsite.com/images/line-banner.png",
-  "telephone": "+886-2-2518-1268",
-  "email": "jennyleiclinic@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "復興北路350號3樓",
-    "addressLocality": "中山區",
-    "addressRegion": "台北市",
-    "postalCode": "10478",
-    "addressCountry": "TW"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 25.0600615,
-    "longitude": 121.5439346
-  },
-  "sameAs": [
-    "https://www.facebook.com/Dr.JennyLei"
-  ],
-  "medicalSpecialty": [
-    "Internal Medicine",
-    "Dietetics",
-    "Psychiatric"
-  ],
-  "availableService": [
-    {
-      "@type": "MedicalTherapy",
-      "name": "專業減重"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "糖尿病"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "高血壓"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "高血脂"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "代謝症候群"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "慢性處方籤"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "內科急慢性疾病"
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "預防保健健檢"
-    }
-  ],
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ],
-      "opens": "09:00",
-      "closes": "12:30"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
-      "opens": "16:00",
-      "closes": "21:00"
-    }
-  ]
-}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
+<script>
+/* ============================================================
+   診所基本資料（很少變動；公告與文章請一律用 /admin 後台改）
+   ============================================================ */
+const SITE = {
+  name: "晨昕診所",
+  phone: "02-2518-1268",
+  phoneLink: "0225181268",
+  address: "台北市中山區復興北路350號3樓",
+  email: "jennyleiclinic@gmail.com",
+  booking: "https://pinmed.co/clinic/8xizpqgz?openAppointment=true",
+  line: "https://line.me/R/ti/p/@598wqthm",  // 診所 LINE 加好友連結
+  facebook: "https://www.facebook.com/Dr.JennyLei",
+  mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.233863070999!2d121.54393459999999!3d25.0600615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abe46125fcb9%3A0x4a4c6cf29a6e996e!2zMTA0Nzjlj7DljJfluILkuK3lsbHljYDlvqnoiIjljJfot68zNTDomZ8z5qiT!5e0!3m2!1szh-TW!2stw!4v1718851999581!5m2!1szh-TW!2stw",
+  services: [
+    { name: "專業減重",   desc: "醫學實證的體重管理方案，由醫師量身規劃藥物與生活介入。" },
+    { name: "糖尿病",     desc: "糖尿病共照網認證機構，智抗糖「糖尿病好診所」推薦名單。" },
+    { name: "高血壓",     desc: "長期血壓監測與精準用藥調整，降低心血管風險。" },
+    { name: "高血脂",     desc: "血脂異常評估與治療，守護血管健康。" },
+    { name: "代謝症候群", desc: "整合減重、血糖、血壓、血脂的全方位代謝照護。" },
+    { name: "慢性處方籤", desc: "慢性病連續處方籤開立與領藥服務。" },
+    { name: "內科急慢性疾病", desc: "感冒、腸胃不適等急性症狀與各類內科慢性疾病診治。" },
+    { name: "預防保健健檢", desc: "成人預防保健與自費健檢套餐，早期發現早期治療。" }
+  ],
+  hours: {
+    note: "國定例假日休息",
+    rows: [
+      { slot: "上午", time: "09:00–12:30", days: ["李泳姿","李泳姿","李泳姿","李泳姿","李泳姿","李泳姿","休診"] },
+      { slot: "下午", time: "16:00–18:00", days: ["李泳姿","何國榮","李泳姿","李泳姿","何國榮","休診","休診"] },
+      { slot: "晚上", time: "18:00–21:00", days: ["李泳姿","何國榮","李泳姿","李泳姿","何國榮","休診","休診"] }
+    ],
+    extra: "身心科門診：每月第一、第三週週六早上，何志培醫師，採全預約制。服務內容：從小孩、成人到老人的各種身心疾患的心理諮商。"
+  },
+  team: [
+    { name: "李泳姿", title: "院長", photo: "images/team/li-yongzi.jpg",
+      creds: ["台灣大學 醫學系","台灣大學 管理學院EMBA","內科專科醫師","血液病專科醫師・腫瘤內科專科醫師","台大醫院竹東分院 內科部主治醫師","台大醫院內科部住院醫師","台灣肥胖醫學會會員","糖尿病共照網認證醫師"] },
+    { name: "何志培", title: "醫師（身心科）", photo: "images/team/ho-chihpei.jpg",
+      creds: ["高雄醫學大學全科醫學士","高雄市立凱旋醫院精神科總醫師、主治醫師","國立成功大學附設醫院兒童青少年精神科完整訓練","台灣兒童青少年精神醫學會創會理事","高雄市立凱旋醫院兒童青少年精神科主任","聯合報「醫藥健康專欄」特聘撰稿人逾10年"] },
+    { name: "何國榮", title: "醫師", photo: "images/team/ho-kuojung.jpg",
+      creds: ["哈佛醫學院附設醫院研修醫師","高雄醫學大學公共衛生碩士","中山醫學大學醫學系","臺大醫院內科部醫師","恩主公醫院主治醫師","糖尿病共照網認證醫師","台灣肥胖醫學會會員"] }
+  ]
+};
+</script>
 
 <style>
 :root{
@@ -146,13 +89,14 @@ header{position:sticky;top:0;z-index:50;background:rgba(251,250,247,.94);backdro
 }
 
 .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#f2f6f3 0%,var(--paper) 78%)}
-.hero .wrap{padding:28px 20px 90px;text-align:center;position:relative;z-index:1}
+.hero .wrap{padding:72px 20px 88px;text-align:center;position:relative;z-index:1}
 .hero .eyebrow{display:inline-block;font-size:13px;letter-spacing:4px;color:var(--dawn);font-weight:700;margin-bottom:14px}
 .hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,52px);color:var(--pine-deep);letter-spacing:4px;margin-bottom:18px}
 .hero p{max-width:620px;margin:0 auto 30px;color:var(--ink-soft)}
 .horizon{position:absolute;left:50%;bottom:-140px;transform:translateX(-50%);width:1400px;height:280px;border-radius:50% 50% 0 0/100% 100% 0 0;background:linear-gradient(180deg,var(--dawn-soft),transparent 70%);pointer-events:none}
 .btn{display:inline-block;padding:12px 32px;border-radius:28px;font-weight:700;font-size:15px;transition:.2s;cursor:pointer}
 .btn-solid{background:var(--pine);color:#fff}
+.btn-big{padding:16px 64px;font-size:22px;letter-spacing:2px;border-radius:36px}
 .btn-solid:hover{background:var(--pine-deep)}
 .btn-ghost{border:1.5px solid var(--pine);color:var(--pine);margin-left:10px}
 .btn-ghost:hover{background:var(--pine);color:#fff}
@@ -163,7 +107,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(251,250,247,.94);backdro
 .notice h3{font-size:16px;color:var(--pine-deep)}
 .notice small{color:var(--ink-soft)}
 
-section{padding:44px 0}
+section{padding:72px 0}
 .sec-head{text-align:center;margin-bottom:44px}
 .sec-head .en{font-size:12px;letter-spacing:4px;color:var(--dawn);font-weight:700}
 .sec-head h2{font-family:var(--serif);font-weight:900;font-size:30px;color:var(--pine-deep);letter-spacing:3px;margin-top:6px}
@@ -222,7 +166,6 @@ section{padding:44px 0}
 @media(max-width:760px){.art-grid{grid-template-columns:1fr}}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;cursor:pointer;transition:.25s;display:flex;flex-direction:column;gap:10px}
 .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(28,74,67,.12)}
-.card,.card:hover{text-decoration:none;color:var(--ink)}
 .card img.thumb{border-radius:10px;margin:-8px -8px 4px;width:calc(100% + 16px);max-height:180px;object-fit:cover}
 .card .cats,.article-page .cats{display:flex;flex-wrap:wrap;gap:6px}
 .card .cat,.article-page .cat{background:var(--dawn-soft);color:#9a6c1c;font-size:12.5px;font-weight:700;padding:3px 12px;border-radius:12px}
@@ -267,23 +210,14 @@ footer a{color:#e8efe9}
 .page{display:none}
 .page.show{display:block}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pine-deep);color:#fff;padding:10px 24px;border-radius:24px;font-size:14px;opacity:0;transition:.3s;z-index:99}
+.fab-line{position:fixed;right:22px;bottom:22px;z-index:90;display:flex;align-items:center;justify-content:center;width:60px;height:60px;background:#06c755;border-radius:50%;box-shadow:0 8px 24px rgba(6,199,85,.45);transition:.2s}
+.fab-line:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(6,199,85,.55)}
+.fab-line svg{width:34px;height:34px;fill:#fff}
+@media(max-width:480px){.fab-line{width:54px;height:54px;right:16px;bottom:16px}.fab-line svg{width:30px;height:30px}}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .loading{text-align:center;color:var(--ink-soft);padding:40px 0;grid-column:1/-1}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 
-.topbar .wrap.topbar-social{justify-content:flex-end}
-.contact-strip{max-width:820px;margin:0 auto 20px;text-align:center}
-.btn-lg{font-size:17px;padding:15px 44px}
-.cs-phone{display:block;margin-top:12px;font-family:var(--serif);font-size:30px;font-weight:700;color:var(--pine-deep);letter-spacing:1px;text-decoration:none}
-.cs-phone:hover{color:var(--pine)}
-.btn-sub{margin-top:9px;font-size:14px;color:var(--ink-soft)}
-.cs-addr{margin-top:8px;font-size:16px;color:var(--ink-soft)}
-.cs-ico{font-size:.72em;margin-right:8px;vertical-align:2px}
-@media(max-width:860px){
-  .contact-strip .btn-lg{display:block;width:100%}
-  .cs-phone{display:block;margin-top:14px;border:1.5px solid var(--pine);border-radius:26px;padding:11px 8px;font-size:23px}
-  .cs-addr{font-size:14px}
-}
 .line-banner{display:block;max-width:820px;margin:0 auto 30px}
 .line-banner img{width:100%;display:block;filter:drop-shadow(0 10px 22px rgba(6,82,56,.22))}
 </style>
@@ -291,7 +225,8 @@ footer a{color:#e8efe9}
 <body>
 
 <div class="topbar">
-  <div class="wrap topbar-social">
+  <div class="wrap">
+    <span>📞 <a id="tb-phone" href="#">02-2518-1268</a>　台北市中山區復興北路350號3樓</span>
     <span><a id="tb-fb" href="#" target="_blank" rel="noopener">Facebook 粉絲專頁</a>　|　<a id="tb-line" href="#" target="_blank" rel="noopener">LINE 加好友</a></span>
   </div>
 </div>
@@ -316,15 +251,12 @@ footer a{color:#e8efe9}
   <div class="hero">
     <div class="horizon"></div>
     <div class="wrap">
-      <div class="contact-strip">
-        <a class="btn btn-solid btn-lg" id="hero-booking" href="#" target="_blank" rel="noopener">預約看診</a>
-        <a class="cs-phone" id="cs-phone" href="#"><span class="cs-ico">📞</span><span id="cs-phone-txt"></span></a>
-        <div class="cs-addr"><span class="cs-ico">📍</span><span id="cs-addr-txt"></span></div>
-      </div>
       <a class="line-banner" id="line-banner" href="#" target="_blank" rel="noopener"><img src="images/line-banner.png" alt="加入晨昕診所 LINE 好友" loading="lazy"></a>
       <span class="eyebrow">DR. JENNY LEI'S CLINIC</span>
       <h1>用心守護您的健康</h1>
       <p>晨昕診所秉持「以人為本」的精神，在專業醫師的帶領下，持續實踐最優質的醫療技術與最貼心的人性化服務。無論是慢性醫療或保健需求，我們用心聆聽每一位患者。</p>
+      <a class="btn btn-solid" id="hero-booking" href="#" target="_blank" rel="noopener">線上預約看診</a>
+      <a class="btn btn-ghost" onclick="go('news')">健康新知</a>
     </div>
   </div>
 
@@ -364,10 +296,7 @@ footer a{color:#e8efe9}
       </div>
       <p class="hours-note" id="hours-note"></p>
       <p class="hours-note" id="hours-extra" style="color:var(--pine);font-weight:500"></p>
-      <div style="text-align:center;margin-top:22px">
-        <a class="btn btn-solid" id="hours-booking" href="#" target="_blank" rel="noopener">預約看診</a>
-        <p class="btn-sub">線上選擇看診時段</p>
-      </div>
+      <p style="text-align:center;margin-top:22px"><a class="btn btn-solid" id="hours-booking" href="#" target="_blank" rel="noopener">預約掛號</a></p>
     </div>
   </section>
 
@@ -395,7 +324,7 @@ footer a{color:#e8efe9}
           <p><strong>地址：</strong><span id="c-addr"></span></p>
           <p><strong>電話：</strong><a id="c-phone" href="#"></a></p>
           <p><strong>Email：</strong><span id="c-mail"></span></p>
-          <p style="margin-top:18px"><a class="btn btn-solid" id="c-booking" href="#" target="_blank" rel="noopener">線上預約</a></p>
+          <p style="margin-top:18px"><a class="btn btn-solid btn-big" id="c-booking" href="#" target="_blank" rel="noopener">預約看診日期</a></p>
         </div>
         <div class="mapbox"><iframe id="c-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="晨昕診所地圖"></iframe></div>
       </div>
@@ -414,6 +343,12 @@ footer a{color:#e8efe9}
   </section>
 </div>
 
+<div class="page" id="page-article">
+  <section>
+    <div class="wrap article-page" id="article-box"></div>
+  </section>
+</div>
+
 <footer>
   <div class="wrap">
     <div class="brand"><img class="logo" src="images/logo.png" alt="">晨昕診所</div>
@@ -422,6 +357,11 @@ footer a{color:#e8efe9}
     <p style="margin-top:14px;font-size:12.5px;color:#8fa79c">© 晨昕診所 All Rights Reserved.</p>
   </div>
 </footer>
+
+<a class="fab-line" id="fab-line" href="#" target="_blank" rel="noopener" aria-label="加入 LINE 好友">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.02 3.58 7.39 8.42 8.03.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.89.56 1.09-.46 5.87-3.46 8.01-5.92C21.5 13.4 22 11.83 22 10.13 22 5.64 17.52 2 12 2ZM8.3 12.6H6.4c-.28 0-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.3h1.4c.28 0 .5.22.5.5s-.22.5-.5.5Zm2-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.8Zm4.5 0c0 .22-.14.4-.34.47a.5.5 0 0 1-.16.03.5.5 0 0 1-.4-.2l-1.95-2.65v2.35c0 .28-.22.5-.5.5s-.5-.22-.5-.5V8.3c0-.22.14-.4.34-.47a.5.5 0 0 1 .56.17l1.95 2.65V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.8Zm3-2.4c.28 0 .5.22.5.5s-.22.5-.5.5h-1.4v.9h1.4c.28 0 .5.22.5.5s-.22.5-.5.5h-1.9c-.28 0-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5h1.9c.28 0 .5.22.5.5s-.22.5-.5.5h-1.4v.9h1.4Z"/></svg>
+</a>
+<div class="toast" id="toast">連結已複製</div>
 
 <script src="data/content.js"></script>
 <script>
@@ -439,49 +379,39 @@ const SVC_ICONS = {
 };
 
 const $ = id => document.getElementById(id);
-/* 診所資料一律由後台「診所資料」維護，build 時寫進 data/content.js */
-const SITE = window.__SITE__ || {};
 let ARTICLES = [];
 let currentCat = "全部";
 
-function esc(s){return String(s==null?'':s)
-  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-/* 只允許安全的連結協定 */
-function safeUrl(u){const t=String(u||'').trim();
-  return /^(https?:|mailto:|tel:|\/|#|\.)/i.test(t)?t:'#';}
-
-const DAYKEYS = ['mon','tue','wed','thu','fri','sat','sun'];
-const SVC_FALLBACK = `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="14" fill="none" stroke="#1C4A43" stroke-width="2.6"/><line x1="24" y1="17" x2="24" y2="31" stroke="#D99A3D" stroke-width="2.8" stroke-linecap="round"/><line x1="17" y1="24" x2="31" y2="24" stroke="#D99A3D" stroke-width="2.8" stroke-linecap="round"/></svg>`;
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 
 function initStatic(){
-  const h = SITE.hours || {};
-  $('tb-fb').href = safeUrl(SITE.facebook);
-  const bk = safeUrl(SITE.booking);
-  $('hero-booking').href = $('hours-booking').href = $('c-booking').href = $('f-booking').href = bk;
-  $('c-addr').textContent = $('f-addr').textContent = $('cs-addr-txt').textContent = SITE.address || '';
-  $('cs-phone').href = 'tel:'+SITE.phoneLink; $('cs-phone-txt').textContent = SITE.phone || '';
-  $('c-phone').href='tel:'+SITE.phoneLink; $('c-phone').textContent=SITE.phone || '';
-  $('c-mail').textContent = SITE.email || '';
-  if(SITE.mapEmbed) $('c-map').src = SITE.mapEmbed;
-  $('f-fb').href = safeUrl(SITE.facebook);
-  $('tb-line').href = $('f-line').href = safeUrl(SITE.line);
+  $('tb-phone').href = 'tel:'+SITE.phoneLink; $('tb-phone').textContent = SITE.phone;
+  $('tb-fb').href = SITE.facebook;
+  $('hero-booking').href = $('hours-booking').href = $('c-booking').href = $('f-booking').href = SITE.booking;
+  $('c-addr').textContent = $('f-addr').textContent = SITE.address;
+  $('c-phone').href='tel:'+SITE.phoneLink; $('c-phone').textContent=SITE.phone;
+  $('c-mail').textContent = SITE.email;
+  $('c-map').src = SITE.mapEmbed;
+  $('f-fb').href = SITE.facebook;
+  $('tb-line').href = $('f-line').href = SITE.line || '#';
   const lb = $('line-banner');
-  if(SITE.line){ lb.href = safeUrl(SITE.line); } else { lb.removeAttribute('target'); lb.onclick = e => e.preventDefault(); }
+  if(SITE.line){ lb.href = SITE.line; } else { lb.removeAttribute('target'); lb.onclick = e => e.preventDefault(); }
+  const fab = $('fab-line');
+  if(SITE.line){ fab.href = SITE.line; } else { fab.removeAttribute('target'); fab.onclick = e => e.preventDefault(); }
 
-  $('svc-grid').innerHTML = (SITE.services||[]).map(sv=>
-    `<div class="svc"><div class="icon">${SVC_ICONS[sv.name]||SVC_FALLBACK}</div><h3>${esc(sv.name)}</h3></div>`).join('');
+  $('svc-grid').innerHTML = SITE.services.map(s=>
+    `<div class="svc"><div class="icon">${SVC_ICONS[s.name]||''}</div><h3>${esc(s.name)}</h3></div>`).join('');
 
-  $('hours-body').innerHTML = (h.rows||[]).map(r=>
+  $('hours-body').innerHTML = SITE.hours.rows.map(r=>
     `<tr><td class="slot">${esc(r.slot)}<br><small>${esc(r.time)}</small></td>`+
-    DAYKEYS.map(k=>{const d=r[k]||'';return `<td class="${d==='休診'?'off':''}">${esc(d)}</td>`;}).join('')+`</tr>`).join('');
-  $('hours-note').textContent = h.note || '';
-  $('hours-extra').textContent = h.extra || '';
+    r.days.map(d=>`<td class="${d==='休診'?'off':''}">${esc(d)}</td>`).join('')+`</tr>`).join('');
+  $('hours-note').textContent = SITE.hours.note;
+  $('hours-extra').textContent = SITE.hours.extra;
 
-  $('team-grid').innerHTML = (SITE.team||[]).map(t=>
+  $('team-grid').innerHTML = SITE.team.map(t=>
     `<div class="doc">${t.photo?`<img class="photo" src="${esc(t.photo)}" alt="${esc(t.name)}${esc(t.title)}" loading="lazy">`:''}
      <h3>${esc(t.name)}</h3><div class="role">${esc(t.title)}</div>
-     <ul>${(t.creds||[]).map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div>`).join('');
+     <ul>${t.creds.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div>`).join('');
 }
 
 /* ---- 載入後台維護的內容（優先讀 content.js，本機與線上都能動） ---- */
@@ -532,13 +462,13 @@ function tagsOf(a){
 
 function cardHTML(a){
   const tags = tagsOf(a);
-  return `<a class="card" href="/article/${encodeURIComponent(a.slug)}/">
+  return `<div class="card" onclick="go('article',null,'${esc(a.slug)}')">
     ${a.thumbnail?`<img class="thumb" src="${esc(a.thumbnail)}" alt="" loading="lazy">`:''}
     <div class="cats">${tags.map(t=>`<span class="cat">${esc(t)}</span>`).join('')}</div>
     <h3>${esc(a.title)}</h3>
     <p>${esc(a.excerpt)}</p>
     <div class="meta">${esc(a.author)}　·　${esc(a.date)}</div>
-  </a>`;
+  </div>`;
 }
 
 function renderCats(){
@@ -552,22 +482,19 @@ function renderCats(){
 
   // 上排：最熱門三個標籤（置中）
   const topRow = top.map(c=>
-    `<button class="cat-btn ${c===currentCat?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+    `<button class="cat-btn ${c===currentCat?'active':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</button>`).join('');
 
   // 下排：最左邊是「分類」下拉（含全部標籤選項），接著「全部」
   const dropdown = `<div class="cat-more">
       <button class="cat-btn cat-more-btn ${picked?'active':''}">${picked?esc(currentCat):'分類'} ▾</button>
       <div class="cat-menu">${sorted.map(c=>
-        `<a class="${c===currentCat?'on':''}" data-cat="${esc(c)}">${esc(c)}</a>`).join('')}</div>
+        `<a class="${c===currentCat?'on':''}" onclick="filterCat('${esc(c)}')">${esc(c)}</a>`).join('')}</div>
     </div>`;
-  const allBtn = `<button class="cat-btn ${currentCat==='全部'?'active':''}" data-cat="全部">全部</button>`;
+  const allBtn = `<button class="cat-btn ${currentCat==='全部'?'active':''}" onclick="filterCat('全部')">全部</button>`;
 
   $('cat-bar').innerHTML =
     `<div class="cat-row cat-row-top">${topRow}</div>
      <div class="cat-row cat-row-bottom">${dropdown}${allBtn}</div>`;
-  $('cat-bar').querySelectorAll('[data-cat]').forEach(el=>{
-    el.addEventListener('click', ()=>filterCat(el.dataset.cat));
-  });
 }
 function filterCat(c){ currentCat=c; newsPage=1; renderCats(); renderNews(); }
 
@@ -589,38 +516,79 @@ function renderNews(){
 }
 function gotoNews(p){ newsPage=p; renderNews(); document.getElementById('page-news').scrollIntoView({behavior:'smooth'}); }
 
+/* ---- 文章內頁 + 分享 ---- */
+function renderArticle(slug){
+  const a = ARTICLES.find(x=>x.slug===slug);
+  if(!a){ go('news'); return; }
+  const url = location.origin + location.pathname + '#article/' + encodeURIComponent(a.slug);
+  const encURL = encodeURIComponent(url);
+  const encTitle = encodeURIComponent(a.title);
+  $('article-box').innerHTML = `
+    <div class="cats">${tagsOf(a).map(t=>`<span class="cat">${esc(t)}</span>`).join('')}</div>
+    <h1>${esc(a.title)}</h1>
+    <div class="meta">${esc(a.author)}　·　建立日期：${esc(a.date)}</div>
+    <div class="article-body">${a.html}</div>
+    <div class="share">
+      <div class="lbl">分享這篇文章</div>
+      <div class="share-btns">
+        <a class="sbtn threads" target="_blank" rel="noopener"
+           href="https://www.threads.net/intent/post?text=${encTitle}%0A${encURL}">
+          <svg viewBox="0 0 24 24"><path d="M12.2 24h-.01c-3.58-.02-6.33-1.2-8.19-3.51C2.35 18.44 1.5 15.59 1.47 12v-.01c.03-3.58.88-6.43 2.53-8.48C5.86 1.2 8.61.02 12.19 0h.02c2.74.02 5.04.72 6.82 2.1 1.68 1.3 2.86 3.14 3.51 5.49l-2.04.57c-1.1-3.98-3.9-6.01-8.3-6.04-2.91.02-5.11.93-6.53 2.7C4.33 6.48 3.65 8.87 3.62 12c.03 3.13.71 5.52 2.05 7.18 1.42 1.77 3.62 2.68 6.53 2.7 2.62-.02 4.36-.64 5.8-2.08 1.65-1.64 1.62-3.66 1.09-4.89-.31-.72-.88-1.32-1.63-1.78-.19 1.4-.62 2.53-1.29 3.38-.89 1.14-2.16 1.76-3.77 1.85-1.22.07-2.4-.22-3.31-.82-1.08-.7-1.71-1.78-1.78-3.02-.13-2.45 1.83-4.21 4.87-4.39.9-.05 1.75-.01 2.53.12-.1-.62-.31-1.12-.62-1.48-.43-.49-1.09-.74-1.97-.75h-.03c-.71 0-1.67.2-2.28 1.11l-1.71-1.15c.95-1.42 2.5-2.2 4.02-2.2h.05c2.87.02 4.58 1.78 4.75 4.85l.01.17c.51.22.99.49 1.4.81 1.05.81 1.79 1.87 2.15 3.06.5 1.68.55 4.41-1.61 6.57-1.86 1.85-4.12 2.68-7.32 2.71zm.9-10.83c-.2 0-.4 0-.61.02-1.55.09-2.94.79-2.87 2.19.04.73.42 1.31 1.07 1.73.55.36 1.28.54 2.03.5 1.04-.06 1.81-.42 2.36-1.12.44-.56.74-1.35.89-2.36-.86-.19-1.83-.29-2.87-.29z"/></svg>
+          Threads</a>
+        <a class="sbtn fb" target="_blank" rel="noopener"
+           href="https://www.facebook.com/sharer/sharer.php?u=${encURL}">
+          <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+          Facebook</a>
+        <a class="sbtn line" target="_blank" rel="noopener"
+           href="https://social-plugins.line.me/lineit/share?url=${encURL}&text=${encTitle}">
+          <svg viewBox="0 0 24 24"><path d="M19.37 4.43C17.4 2.6 14.8 1.6 12 1.6 6.16 1.6 1.4 5.53 1.4 10.36c0 4.33 3.77 7.96 8.86 8.65.34.07.81.23.93.52.11.27.07.68.04.95l-.15.9c-.05.27-.21 1.06.93.58 1.14-.48 6.16-3.63 8.4-6.21 1.55-1.7 2.19-3.43 2.19-5.39 0-2.24-1.09-4.3-3.23-5.93zM7.65 13.16H5.5c-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v3.71h1.58c.32 0 .57.26.57.57 0 .31-.25.56-.57.56zm2.19-.56c0 .31-.25.56-.57.56-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v4.28zm5.14 0c0 .24-.16.46-.39.53-.06.02-.12.03-.18.03-.18 0-.34-.08-.45-.22l-2.19-2.97v2.63c0 .31-.25.56-.57.56-.31 0-.57-.25-.57-.56V8.32c0-.24.16-.46.39-.53.06-.02.12-.03.18-.03.18 0 .34.08.45.22l2.19 2.98V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v4.28zm3.46-2.71c.31 0 .57.25.57.57 0 .31-.26.56-.57.56h-1.59v1.02h1.59c.31 0 .57.26.57.57 0 .31-.26.56-.57.56h-2.16c-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57h2.16c.31 0 .57.26.57.57 0 .32-.26.57-.57.57h-1.59v1z"/></svg>
+          LINE</a>
+        <button class="sbtn copy" onclick="copyLink('${url}')">
+          <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+          複製連結</button>
+      </div>
+    </div>
+    <a class="back-link" onclick="go('news')">← 回文章列表</a>`;
+  document.title = a.title + '｜晨昕診所';
+}
+
+function copyLink(url){
+  navigator.clipboard.writeText(url).then(()=>{
+    const t=$('toast'); t.classList.add('on');
+    setTimeout(()=>t.classList.remove('on'),1800);
+  });
+}
+
 /* ---- 路由 ---- */
-function go(page, anchor){
+function go(page, anchor, slug){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
   $('menu').classList.remove('open');
-  $('page-'+page).classList.add('show');
-  document.title = '晨昕診所｜台北市中山區內科・糖尿病・慢病體重管理';
-  if(page==='news'){ renderCats(); renderNews(); location.hash='news'; }
-  if(page==='home'){ if(!anchor) location.hash='home'; }
-  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===page));
-  if(anchor){
-    const jump = ()=>{ const el=$(anchor); if(el) el.scrollIntoView({behavior:'smooth'}); };
-    requestAnimationFrame(()=>requestAnimationFrame(jump));
-    setTimeout(jump, 400);
+  if(page==='article'){
+    $('page-article').classList.add('show');
+    renderArticle(slug);
+    location.hash = 'article/'+encodeURIComponent(slug);
+  } else {
+    $('page-'+page).classList.add('show');
+    document.title = '晨昕診所｜台北市中山區內科・糖尿病・慢病體重管理';
+    if(page==='news'){ renderCats(); renderNews(); location.hash='news'; }
+    if(page==='home'){ if(!anchor) location.hash='home'; }
   }
+  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===page));
+  if(anchor){ setTimeout(()=>{ const el=$(anchor); if(el) el.scrollIntoView({behavior:'smooth'}); },50); }
   else window.scrollTo({top:0});
 }
 
 function route(){
   const h = decodeURIComponent(location.hash);
-  /* 相容：舊的 #article/xxx 分享連結 → 轉到新的實體網址 */
   const m = h.match(/^#article\/(.+)$/);
-  if(m){ location.replace('/article/'+encodeURIComponent(m[1])+'/'); return; }
-  if(h==='#news'){ go('news'); return; }
-  /* 從文章頁回首頁的區塊錨點，例如 /#team */
-  const sec = h.replace(/^#/,'');
-  if(['about','team','services','hours','contact'].includes(sec)){ go('home', sec); return; }
-  go('home');
+  if(m && ARTICLES.length) go('article',null,m[1]);
+  else if(h==='#news') go('news');
+  else go('home');
 }
 window.addEventListener('hashchange', route);
 
 initStatic();
-route();          /* 依網址決定要顯示哪一頁、要不要捲到區塊 */
+go('home');
 loadContent();
 </script>
 </body>
