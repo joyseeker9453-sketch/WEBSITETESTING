@@ -293,9 +293,9 @@ function headerHtml() {
     '    <a class="brand" href="/#home"><img class="logo" src="/images/logo.png" alt="' + esc(SITE.name) + ' Logo">' + esc(SITE.name) + '</a>\n' +
     '    <ul class="menu">\n' +
     '      <li><a href="/#home">首頁</a></li>\n' +
+    '      <li><a href="/notices/">診所公告</a></li>\n' +
     '      <li><a href="/#team">醫療團隊</a></li>\n' +
     '      <li><a href="/#news">健康新知</a></li>\n' +
-    '      <li><a href="/notices/">診所公告</a></li>\n' +
     '      <li><a href="' + esc(safeUrl(SITE.booking)) + '" target="_blank" rel="noopener">線上預約</a></li>\n' +
     '    </ul>\n  </div>\n</header>';
 }
