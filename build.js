@@ -104,14 +104,31 @@ function absUrl(u) {
 }
 
 /* ---------- 極簡 Markdown → HTML ---------- */
+/* esc() 之後再對 href 做一次 esc 會變成 &amp;amp;，所以取回原字元再重新跳脫 */
+function unesc(t) {
+  return String(t).replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+}
 function inline(s) {
-  return esc(s)
+  /* 先把已經轉好的 <img> / <a> 收進 slots 換成佔位符，
+     這樣後面的「裸網址自動連結」不會把它們的 href 再包一層。 */
+  const slots = [];
+  const keep = html => '\u0000' + (slots.push(html) - 1) + '\u0000';
+  const out = esc(s)
     .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g,
-      (_, alt, src) => '<img src="' + esc(safeUrl(src)) + '" alt="' + alt + '" loading="lazy">')
+      (_, alt, src) => keep('<img src="' + esc(safeUrl(unesc(src))) + '" alt="' + alt + '" loading="lazy">'))
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,
-      (_, txt, href) => '<a href="' + esc(safeUrl(href)) + '" target="_blank" rel="noopener">' + txt + '</a>')
+      (_, txt, href) => keep('<a href="' + esc(safeUrl(unesc(href))) + '" target="_blank" rel="noopener">' + txt + '</a>'))
+    /* 裸網址自動變連結：老闆直接貼 https://... 或 www.... 也能點 */
+    .replace(/(^|[\s(（【])((?:https?:\/\/|www\.)[^\s<>()（）「」【】]+)/g, (m, pre, url) => {
+      const tail = (url.match(/[.,;:!?。，、；：！？]+$/) || [''])[0];
+      const clean = tail ? url.slice(0, -tail.length) : url;
+      const href = clean.startsWith('www.') ? 'https://' + clean : clean;
+      return pre + keep('<a href="' + esc(safeUrl(unesc(href))) + '" target="_blank" rel="noopener">' + clean + '</a>') + tail;
+    })
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => slots[i]);
 }
 function mdToHtml(md) {
   const blocks = md.split(/\r?\n\r?\n+/);
@@ -223,7 +240,8 @@ const OG_END = '<!--OG:END-->';
   const DAY = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   const DAY_EN = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const openSpec = [];
-  ((SITE.hours && SITE.hours.rows) || []).forEach(row => {
+  const _rows = (SITE.hours && Array.isArray(SITE.hours.rows)) ? SITE.hours.rows : [];
+  _rows.forEach(row => {
     const t = String(row.time || '').split(/[–—\-~]/);
     if (t.length < 2) return;
     const opens = t[0].trim(), closes = t[1].trim();
@@ -257,7 +275,7 @@ const OG_END = '<!--OG:END-->';
       streetAddress: am ? (am[3] || addr) : addr
     } : undefined,
     sameAs: [SITE.facebook, SITE.line].filter(Boolean),
-    medicalSpecialty: ((SITE.services || []).map(x => x.name).filter(Boolean)),
+    medicalSpecialty: (Array.isArray(SITE.services) ? SITE.services : []).map(x => x && x.name).filter(Boolean),
     openingHoursSpecification: openSpec.length ? openSpec : undefined
   };
   if (!clinicLd.sameAs.length) delete clinicLd.sameAs;
@@ -409,7 +427,7 @@ const noticeList = (ann.items || []).filter(i => i && i.show !== false);
     '        <span class="tag">公告</span>\n' +
     '        <div>\n' +
     '          <h3>' + esc(i.title) + '</h3>\n' +
-    '          <p style="font-size:14.5px">' + esc(i.body).replace(/\r?\n/g, '<br>') + '</p>\n' +
+    '          <div class="notice-body">' + mdToHtml(String(i.body || '')) + '</div>\n' +
     '          <small>公告日期：' + esc(i.date) + '</small>\n' +
     '        </div>\n' +
     '      </div>'
