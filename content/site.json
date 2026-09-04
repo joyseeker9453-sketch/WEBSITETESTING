@@ -5,7 +5,7 @@
   "phone": "02-2518-1268",
   "phoneLink": "0225181268",
   "address": "台北市中山區復興北路350號3樓",
-  "email": "jennyleiclinic@gmail.com",
+  "email": "leiwengchi@gmail.com",
   "booking": "https://pinmed.co/clinic/8xizpqgz?openAppointment=true",
   "line": "https://line.me/R/ti/p/@598wqthm",
   "facebook": "https://www.facebook.com/Dr.JennyLei",
@@ -113,6 +113,19 @@
         "恩主公醫院主治醫師",
         "糖尿病共照網認證醫師",
         "台灣肥胖醫學會會員"
+      ]
+    },
+    {
+      "name": "林俊言",
+      "title": "醫師",
+      "photo": "",
+      "creds": [
+        "台大醫學系",
+        "台大醫院小兒科住院醫生",
+        "小兒科專科醫師",
+        "小兒神經專科醫師",
+        "糖尿病共同照顧網認證醫師",
+        "慢性病腎臟病照護認證醫師"
       ]
     }
   ]
