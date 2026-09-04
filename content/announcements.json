@@ -10,7 +10,7 @@
     {
       "title": "這是DEMO 用 並不是正式診所網站",
       "date": "2026-08-14",
-      "body": "此為DEMO使用 並非晨昕診所正式網站\n正式網站仍為<a href=\"https://jenny-clinic.com/\" target=\"_blank\">https://jenny-clinic.com/</a>",
+      "body": "此為DEMO使用 並非晨昕診所正式網站\n正式網站仍為 [https://jenny-clinic.com/](https://jenny-clinic.com/)",
       "show": true,
       "pinned": true
     },
