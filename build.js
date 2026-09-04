@@ -190,6 +190,99 @@ const styleMatch = indexHtml.match(/<style>([\s\S]*?)<\/style>/);
 if (!styleMatch) { console.error('index.html 找不到 <style> 區塊'); process.exit(1); }
 fs.writeFileSync(path.join(ROOT, 'styles.css'), styleMatch[1].trim() + '\n');
 
+/* ============================================================
+   首頁 <head>：注入 og:image / og:url / canonical / 診所 JSON-LD
+   ------------------------------------------------------------
+   只重寫 index.html 裡 <!--OG:START--> 與 <!--OG:END--> 之間的內容，
+   可重複執行不會累積。<title> 與 description 是人工調過的，保留不動，
+   只把它們的文字拿來當 og:title / og:description。
+   ============================================================ */
+const OG_START = '<!--OG:START-->';
+const OG_END = '<!--OG:END-->';
+(function injectHomeHead() {
+  const s = indexHtml.indexOf(OG_START);
+  const e = indexHtml.indexOf(OG_END);
+  if (s === -1 || e === -1 || e < s) {
+    console.warn('! index.html 找不到 OG 標記區塊，略過首頁 OG 注入');
+    return;
+  }
+  if (!BASE) console.warn('! 後台「網站網址」是空的，首頁 og:url / canonical 會不完整');
+
+  const titleM = indexHtml.match(/<title>([\s\S]*?)<\/title>/);
+  const descM = indexHtml.match(/<meta\s+name="description"\s+content="([^"]*)"/i);
+  const title = titleM ? titleM[1].trim() : SITE.name;
+  const desc = descM ? descM[1].trim() : '';
+  const homeUrl = BASE + '/';
+  const ogImg = absUrl(SITE.ogImage || '/images/logo.png');
+
+  /* 地址粗切成 縣市 / 行政區 / 其餘，讓 Google 比較好解析 */
+  const addr = String(SITE.address || '');
+  const am = addr.match(/^(.+?[市縣])(.+?區)?(.*)$/);
+
+  /* 門診時間 → openingHoursSpecification（Google 商家資訊會用到） */
+  const DAY = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  const DAY_EN = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const openSpec = [];
+  ((SITE.hours && SITE.hours.rows) || []).forEach(row => {
+    const t = String(row.time || '').split(/[–—\-~]/);
+    if (t.length < 2) return;
+    const opens = t[0].trim(), closes = t[1].trim();
+    if (!/^\d{1,2}:\d{2}$/.test(opens) || !/^\d{1,2}:\d{2}$/.test(closes)) return;
+    const days = [];
+    DAY.forEach((k, i) => {
+      const v = String(row[k] == null ? '' : row[k]).trim();
+      if (v && v !== '休診') days.push(DAY_EN[i]);
+    });
+    if (days.length) openSpec.push({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: days, opens: opens, closes: closes
+    });
+  });
+
+  const clinicLd = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalClinic',
+    name: SITE.name,
+    url: homeUrl || undefined,
+    description: desc || undefined,
+    telephone: SITE.phone || undefined,
+    email: SITE.email || undefined,
+    image: ogImg || undefined,
+    logo: absUrl('/images/logo.png') || undefined,
+    address: addr ? {
+      '@type': 'PostalAddress',
+      addressCountry: 'TW',
+      addressRegion: am ? am[1] : undefined,
+      addressLocality: (am && am[2]) ? am[2] : undefined,
+      streetAddress: am ? (am[3] || addr) : addr
+    } : undefined,
+    sameAs: [SITE.facebook, SITE.line].filter(Boolean),
+    medicalSpecialty: ((SITE.services || []).map(x => x.name).filter(Boolean)),
+    openingHoursSpecification: openSpec.length ? openSpec : undefined
+  };
+  if (!clinicLd.sameAs.length) delete clinicLd.sameAs;
+  if (!clinicLd.medicalSpecialty.length) delete clinicLd.medicalSpecialty;
+
+  const block = [
+    OG_START,
+    '<!-- 以下由 build.js 自動產生，資料來自後台「診所資料」。手動修改會在下次部署被覆蓋。 -->',
+    '<link rel="canonical" href="' + esc(homeUrl) + '">',
+    '<meta property="og:type" content="website">',
+    '<meta property="og:site_name" content="' + esc(SITE.name) + '">',
+    '<meta property="og:title" content="' + esc(title) + '">',
+    '<meta property="og:description" content="' + esc(desc) + '">',
+    '<meta property="og:url" content="' + esc(homeUrl) + '">',
+    '<meta property="og:image" content="' + esc(ogImg) + '">',
+    '<meta name="twitter:card" content="summary_large_image">',
+    '<script type="application/ld+json">' + JSON.stringify(clinicLd) + '</script>',
+    OG_END
+  ].join('\n');
+
+  fs.writeFileSync(path.join(ROOT, 'index.html'),
+    indexHtml.slice(0, s) + block + indexHtml.slice(e + OG_END.length));
+  console.log('✓ 首頁 OG 已注入（og:image = ' + ogImg + '，門診時段 ' + openSpec.length + ' 組）');
+})();
+
 function headerHtml() {
   return '<div class="topbar">\n' +
     '  <div class="wrap">\n' +
