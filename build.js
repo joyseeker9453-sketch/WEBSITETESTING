@@ -295,6 +295,7 @@ function headerHtml() {
     '      <li><a href="/#home">首頁</a></li>\n' +
     '      <li><a href="/#team">醫療團隊</a></li>\n' +
     '      <li><a href="/#news">健康新知</a></li>\n' +
+    '      <li><a href="/notices/">診所公告</a></li>\n' +
     '      <li><a href="' + esc(safeUrl(SITE.booking)) + '" target="_blank" rel="noopener">線上預約</a></li>\n' +
     '    </ul>\n  </div>\n</header>';
 }
@@ -389,9 +390,84 @@ for (const a of articles) {
   }
 }
 
+/* ============================================================
+   公告實體頁 /notices/
+   患者最常搜「診所名 + 休診」，這頁要能被 Google 單獨收錄，
+   所以做成真實 HTML，不靠 JavaScript。
+   ============================================================ */
+const NOTICE_OUT = path.join(ROOT, 'notices');
+const noticeList = (ann.items || []).filter(i => i && i.show !== false);
+(function buildNoticesPage() {
+  const url = BASE + '/notices/';
+  const desc = noticeList.length
+    ? plain(noticeList[0].title + '。' + (noticeList[0].body || ''), 150)
+    : (SITE.name + '的最新公告與休診資訊。');
+  const img = absUrl(SITE.ogImage || '/images/logo.png');
+
+  const cards = noticeList.map(i =>
+    '      <div class="notice">\n' +
+    '        <span class="tag">公告</span>\n' +
+    '        <div>\n' +
+    '          <h3>' + esc(i.title) + '</h3>\n' +
+    '          <p style="font-size:14.5px">' + esc(i.body).replace(/\r?\n/g, '<br>') + '</p>\n' +
+    '          <small>公告日期：' + esc(i.date) + '</small>\n' +
+    '        </div>\n' +
+    '      </div>'
+  ).join('\n') || '      <p class="loading">目前沒有公告。</p>';
+
+  const jsonld = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: '診所公告｜' + SITE.name,
+    description: desc,
+    url: url,
+    isPartOf: { '@type': 'MedicalClinic', name: SITE.name, url: BASE + '/' }
+  };
+
+  const page = '<!DOCTYPE html>\n<html lang="zh-Hant">\n<head>\n' +
+    '<meta charset="UTF-8">\n' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+    '<title>診所公告｜' + esc(SITE.name) + '</title>\n' +
+    '<meta name="description" content="' + esc(desc) + '">\n' +
+    '<link rel="canonical" href="' + esc(url) + '">\n' +
+    '<meta property="og:type" content="website">\n' +
+    '<meta property="og:site_name" content="' + esc(SITE.name) + '">\n' +
+    '<meta property="og:title" content="診所公告｜' + esc(SITE.name) + '">\n' +
+    '<meta property="og:description" content="' + esc(desc) + '">\n' +
+    '<meta property="og:url" content="' + esc(url) + '">\n' +
+    '<meta property="og:image" content="' + esc(img) + '">\n' +
+    '<meta name="twitter:card" content="summary_large_image">\n' +
+    '<link rel="icon" type="image/png" href="/images/logo.png">\n' +
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+    '<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">\n' +
+    '<link rel="stylesheet" href="/styles.css">\n' +
+    '<script type="application/ld+json">' + JSON.stringify(jsonld) + '</script>\n' +
+    '</head>\n<body>\n' +
+    headerHtml() + '\n' +
+    '<div class="page show">\n  <section>\n    <div class="wrap">\n' +
+    '      <div class="sec-head"><span class="en">NOTICES</span><h2>診所公告</h2></div>\n' +
+    '      <div class="notice-list">\n' + cards + '\n      </div>\n' +
+    '      <p style="text-align:center"><a class="back-link" href="/#home">← 回首頁</a></p>\n' +
+    '    </div>\n  </section>\n</div>\n' +
+    footerHtml() + '\n</body>\n</html>\n';
+
+  fs.rmSync(NOTICE_OUT, { recursive: true, force: true });
+  fs.mkdirSync(NOTICE_OUT, { recursive: true });
+  fs.writeFileSync(path.join(NOTICE_OUT, 'index.html'), page);
+})();
+
+/* 置頂公告檢查：後台可以勾多則，但首頁只顯示日期最新的一則 */
+const pinned = noticeList.filter(i => i.pinned);
+if (pinned.length > 1) {
+  console.warn('! 有 ' + pinned.length + ' 則公告被設為置頂，首頁只會顯示最新的「' + pinned[0].title + '」');
+} else if (!pinned.length) {
+  console.warn('! 目前沒有任何置頂公告，首頁不會顯示公告條（到後台把某則的「置頂公告」打開即可）');
+}
+
 /* ---------- sitemap.xml ---------- */
 const today = new Date().toISOString().slice(0, 10);
-const urls = [{ loc: BASE + '/', pri: '1.0', mod: today }].concat(
+const urls = [{ loc: BASE + '/', pri: '1.0', mod: today },
+  { loc: BASE + '/notices/', pri: '0.7', mod: (noticeList[0] && noticeList[0].date) || today }].concat(
   articles.map(a => ({ loc: BASE + '/article/' + encodeURIComponent(a.slug) + '/', pri: '0.8', mod: a.date || today }))
 );
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
@@ -400,4 +476,4 @@ fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
   '\n</urlset>\n');
 
 console.log('✓ 建置完成：' + articles.length + ' 篇文章（已產生實體頁）、' +
-  ann.items.length + ' 則公告（顯示中 ' + ann.items.filter(i => i.show).length + ' 則）、sitemap ' + urls.length + ' 筆');
+  noticeList.length + ' 則公開公告（置頂 ' + pinned.length + ' 則）、sitemap ' + urls.length + ' 筆');
