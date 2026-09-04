@@ -35,7 +35,8 @@ collections:
               - { label: "標題", name: "title", widget: "string" }
               - { label: "公告日期", name: "date", widget: "string", hint: "格式：2026-07-07" }
               - { label: "內容", name: "body", widget: "text" }
-              - { label: "顯示在首頁", name: "show", widget: "boolean", default: true, hint: "關閉即下架，不用刪除" }
+              - { label: "公開", name: "show", widget: "boolean", default: true, hint: "關閉即下架，公告頁不會顯示，但資料保留不用刪除" }
+              - { label: "置頂公告", name: "pinned", widget: "boolean", default: false, hint: "打開後會顯示在首頁最上方那一條。同時打開多則時，只會顯示日期最新的那一則。" }
 
 
   # ---------- 診所資料（門診時間 / 醫療團隊 / 聯絡方式） ----------
