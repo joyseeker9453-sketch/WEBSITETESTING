@@ -686,6 +686,7 @@ function fitHero(){
   const FITS = ['fit1','fit2','fit3','fit4','fit5'];
   root.classList.remove(...FITS);
   const other = docBottom(btn) - box.getBoundingClientRect().height + FIT_GAP;
+  const prev = root.style.getPropertyValue('--lb-other');
   root.style.setProperty('--lb-other', Math.ceil(other) + 'px');
 
   if(getComputedStyle(box).containerType !== 'size'){        /* 直排（手機/平板） */
@@ -694,6 +695,10 @@ function fitHero(){
       if(docBottom(btn) + FIT_GAP <= vh) break;
       root.classList.add(c);
     }
+  }
+  /* 剛從別頁跳到某區塊的 3 秒內，如果橫幅高度變了，區塊位置會被推走，補捲回去 */
+  if(anchorAt && Date.now() - anchorAt.t < 3000 && prev !== root.style.getPropertyValue('--lb-other')){
+    const el = $(anchorAt.id); if(el) el.scrollIntoView({behavior:'auto'});
   }
 }
 let fitW = window.innerWidth, fitTimer;
@@ -724,7 +729,7 @@ async function loadContent(){
     renderPinned(ann.items || []);
     $('home-articles').innerHTML = ARTICLES.slice(0,2).map(cardHTML).join('') ||
       '<p class="loading">目前沒有文章。</p>';
-    route(); /* 內容就緒後才處理分享連結直開文章 */
+    route(true); /* 內容就緒後才處理分享連結直開文章 */
   }catch(e){
     $('home-articles').innerHTML = '<p class="loading">內容載入失敗，請重新整理。</p>';
     console.error(e);
@@ -857,8 +862,11 @@ function copyLink(url){
   });
 }
 
-/* ---- 路由 ---- */
-function go(page, anchor, slug){
+/* ---- 路由 ----
+   opts.keepHash：不要改網址的 #（初次載入時用，否則會把 /#team 蓋成 #home）
+   opts.instant ：直接跳到區塊、不做平滑捲動（從別頁連過來時用） */
+let anchorAt = null;   /* 最近一次跳錨點的區塊與時間，給 fitHero 版面變動後補捲用 */
+function go(page, anchor, slug, opts = {}){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
   $('menu').classList.remove('open');
   if(page==='article'){
@@ -868,31 +876,41 @@ function go(page, anchor, slug){
   } else {
     $('page-'+page).classList.add('show');
     document.title = '晨昕診所｜台北市中山區內科・糖尿病・慢病體重管理';
-    if(page==='news'){ renderCats(); renderNews(); location.hash='news'; }
-    if(page==='home'){ if(!anchor) location.hash='home'; fitHero(); }
+    if(page==='news'){ renderCats(); renderNews(); if(!opts.keepHash) location.hash='news'; }
+    if(page==='home'){ if(!anchor && !opts.keepHash) location.hash='home'; fitHero(); }
   }
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===page));
-  if(anchor){ setTimeout(()=>{ const el=$(anchor); if(el) el.scrollIntoView({behavior:'smooth'}); },50); }
-  else window.scrollTo({top:0});
+  if(anchor){
+    anchorAt = { id: anchor, t: Date.now() };
+    setTimeout(()=>{ const el=$(anchor); if(el) el.scrollIntoView({behavior: opts.instant ? 'auto' : 'smooth'}); },50);
+  }
+  else { anchorAt = null; window.scrollTo({top:0}); }
 }
 
-/* 文章頁的頁首選單會連回 /#team、/#hours 這種錨點，這裡要接住並捲到對應區塊 */
+/* 文章頁、公告頁的頁首選單會連回 /#team、/#news 這種網址，這裡要接住並跳到對應區塊 */
 const HOME_SECTIONS = ['about','services','hours','team','news-preview','contact'];
-function route(){
+function route(initial){
   const h = decodeURIComponent(location.hash);
   const m = h.match(/^#article\/(.+)$/);
-  if(m && ARTICLES.length) go('article',null,m[1]);
-  else if(h==='#news') go('news');
-  else if(HOME_SECTIONS.includes(h.slice(1))) go('home', h.slice(1));
+  const o = initial ? { instant: true, keepHash: true } : {};
+  if(m){
+    if(ARTICLES.length) go('article',null,m[1]);
+    else go('home',null,null,{ keepHash: true });   /* 文章資料還沒載入：先顯示首頁、保留網址，載入後再開文章 */
+  }
+  else if(h==='#news') go('news',null,null,o);
+  else if(HOME_SECTIONS.includes(h.slice(1))) go('home', h.slice(1), null, o);
   else go('home');
 }
-window.addEventListener('hashchange', route);
+window.addEventListener('hashchange', () => route());
 
-/* 先等後台診所資料，再渲染，避免先閃一次舊的寫死內容 */
+/* 先等後台診所資料，再渲染，避免先閃一次舊的寫死內容。
+   ⚠ 這裡一定要走 route(true)，不能直接 go('home')：
+     舊寫法會先把網址改成 #home，從公告頁/文章頁點「醫療團隊」「健康新知」連過來時，
+     /#team、/#news 還沒被讀到就被蓋掉，結果永遠停在首頁頂端。 */
 (async () => {
   await loadSite();
   initStatic();
-  go('home');
+  route(true);
   loadContent();
 })();
 </script>
