@@ -278,6 +278,8 @@ section{padding:4.5rem 0}
 .article-body p{margin-bottom:1.125rem;font-size:1.0312rem}
 .article-body h2,.article-body h3,.article-body h4{font-family:var(--serif);color:var(--pine-deep);margin:1.625rem 0 0.75rem}
 .article-body ul{margin:0 0 1.125rem 1.375rem}
+.article-cover{margin:0 0 1.75rem;border-radius:0.875rem;overflow:hidden;background:var(--mist)}
+.article-cover img{width:100%;height:auto;display:block}
 .article-body img{border-radius:0.75rem;margin:0.625rem 0}
 .back-link{display:inline-block;margin-top:2.125rem;font-weight:700;cursor:pointer}
 
@@ -321,64 +323,62 @@ footer a{color:#e8efe9}
    【首屏保證】電腦上橫幅寬度滿版，高度 = min(原圖比例的高度, 螢幕剩下的空間)：
      --lb-other 由下方 JS 量出「橫幅以外、到『預約看診日期』按鈕底部」的總高度，
      用 100svh 減掉它就是橫幅能用的高度 → 預約按鈕一定落在第一屏。
-   橫幅內部尺寸單位 cqh = 橫幅高度的 1%（原圖 400px 高 → 1cqh = 原圖 4px），
-   所以橫幅變矮時，字與 QR 一起等比縮小、只是左右變得更寬，不會擠壞。
+   橫幅內部尺寸單位 cqh = 橫幅高度的 1%，橫幅變矮時字與 QR 一起等比縮小、只是左右變得更寬，不會擠壞。
    橫幅寬度不足 860px（平板直向、手機）時改成直排、隱藏 QR（手機掃不到自己的螢幕）。 */
 :root{--lb-other:30rem;--lb-min:7rem}
 .line-banner{display:block;container:lb / inline-size;margin:0 0 1rem;color:#fff;border-radius:1rem}
 .line-banner:focus-visible{outline:3px solid var(--dawn);outline-offset:4px}
+/* 高度上限 23.8cqi（寬:高 ≈ 4.2:1）：中間多了一塊權益清單，橫幅要夠寬才排得下三欄 */
 .lb{container:lbbox / size;position:relative;background:#00d287;border-radius:min(2.3cqi,1.5rem);overflow:hidden;
-  height:min(30.864cqi, max(var(--lb-min), calc(100svh - var(--lb-other))));
+  height:min(23.8cqi, max(var(--lb-min), calc(100svh - var(--lb-other))));
   box-shadow:0 0.625rem 1.5rem rgba(6,82,56,.18);transition:transform .2s,box-shadow .2s}
 .line-banner:hover .lb{transform:translateY(-3px);box-shadow:0 0.875rem 2rem rgba(6,82,56,.26)}
 .lb::before,.lb::after{content:"";position:absolute;border-radius:50%;background:#19d693;pointer-events:none}
 .lb::before{width:110cqh;height:110cqh;right:-29cqh;top:-62cqh}
 .lb::after{width:78cqh;height:78cqh;left:-32cqh;bottom:-52cqh}
 .lb-ring{position:absolute;border:max(2px,.7cqh) solid rgba(255,255,255,.45);border-radius:50%;pointer-events:none}
-.lb-ring.r1{width:7.5cqh;height:7.5cqh;left:171cqh;top:9.4cqh}
-.lb-ring.r2{width:5.2cqh;height:5.2cqh;left:159cqh;top:78.7cqh}
-.lb-main{--u:1cqh;position:absolute;z-index:1;left:19cqh;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.lb-title{font-weight:700;font-size:calc(20.1*var(--u));line-height:1.2;letter-spacing:calc(1*var(--u));margin-bottom:calc(5.2*var(--u))}
-.lb-cta{display:inline-flex;align-items:center;gap:calc(7.1*var(--u));height:calc(14.9*var(--u));padding:0 calc(6.2*var(--u)) 0 calc(11.7*var(--u));border-radius:99px;
-  background:#f59e2d;font-weight:700;font-size:calc(7.9*var(--u));line-height:1;white-space:nowrap}
-.lb-cta svg{width:calc(6.8*var(--u));height:calc(6.8*var(--u));flex:0 0 auto}
-.lb-chips{list-style:none;display:flex;flex-wrap:nowrap;gap:calc(4.5*var(--u));margin-top:calc(8.1*var(--u))}
-.lb-chips li{display:inline-flex;align-items:center;gap:calc(1.9*var(--u));height:calc(12*var(--u));padding:0 calc(4.9*var(--u)) 0 calc(4.5*var(--u));border-radius:calc(2.1*var(--u));
-  background:#fff;color:#065238;font-weight:700;font-size:calc(5.8*var(--u));line-height:1;white-space:nowrap}
-.lb-chips svg{width:calc(5.7*var(--u));height:calc(5.7*var(--u));flex:0 0 auto}
-.line-banner .lb-note{margin:calc(7.1*var(--u)) 0 0;max-width:none;color:#fff;text-align:left;font-size:calc(4.4*var(--u));font-weight:500;line-height:1.6}
-.lb-qr{position:absolute;z-index:1;right:16.5cqh;top:17.5cqh;width:75cqh;height:77.5cqh;background:#fff;border-radius:5cqh;
+.lb-ring.r1{width:7.5cqh;height:7.5cqh;left:150cqh;top:9cqh}
+.lb-ring.r2{width:5.2cqh;height:5.2cqh;left:139cqh;top:82cqh}
+/* 三欄：左（標題＋按鈕）｜中（權益清單，置中）｜右（QR） */
+.lb-row{--m:1cqh;--p:1cqh;position:absolute;inset:0;z-index:1;display:flex;align-items:center;padding:0 16.5cqh 0 19cqh}
+/* 橫幅被壓得越扁、左右越空：把標題按鈕（--m）和中間清單（--p）放大，填滿空間 */
+@container lbbox (min-aspect-ratio:4.6/1){.lb-row{--m:1.08cqh;--p:1.25cqh}}
+@container lbbox (min-aspect-ratio:5/1){.lb-row{--m:1.15cqh;--p:1.4cqh}}
+@container lbbox (min-aspect-ratio:6/1){.lb-row{--m:1.25cqh;--p:1.55cqh}}
+.lb-main{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start}
+.lb-title{font-weight:700;font-size:calc(20.1*var(--m));line-height:1.2;letter-spacing:calc(1*var(--m));margin-bottom:calc(6*var(--m))}
+.lb-cta{display:inline-flex;align-items:center;gap:calc(4.5*var(--m));height:calc(18*var(--m));padding:0 calc(4.5*var(--m)) 0 calc(8*var(--m));border-radius:99px;
+  background:#f59e2d;font-weight:700;font-size:calc(9.2*var(--m));line-height:1;white-space:nowrap;box-shadow:0 calc(1*var(--m)) calc(3*var(--m)) rgba(150,80,0,.18)}
+.lb-cta .lb-line-ico{width:calc(11*var(--m));height:calc(11*var(--m));flex:0 0 auto;border-radius:50%;background:#06c755;display:flex;align-items:center;justify-content:center}
+.lb-cta .lb-line-ico svg{width:65%;height:65%;fill:#fff}
+.lb-perks{flex:1 1 auto;min-width:0;display:flex;justify-content:center;padding:0 calc(8*var(--p))}
+.lb-perks-in{background:rgba(255,255,255,.14);border:max(1px,calc(.4*var(--p))) solid rgba(255,255,255,.32);border-radius:calc(4.5*var(--p));padding:calc(6*var(--p)) calc(8*var(--p)) calc(6.5*var(--p))}
+.lb-perks-h{font-weight:700;font-size:calc(6.2*var(--p));line-height:1.3;white-space:nowrap;margin-bottom:calc(5*var(--p))}
+.lb-perks ol{list-style:none;counter-reset:perk;display:grid;grid-template-columns:auto auto;gap:calc(4*var(--p)) calc(9*var(--p))}
+.lb-perks li{counter-increment:perk;display:flex;align-items:center;gap:calc(2.6*var(--p));font-weight:700;font-size:calc(6.4*var(--p));line-height:1.2;white-space:nowrap}
+.lb-perks li::before{content:counter(perk);flex:0 0 auto;width:calc(8.6*var(--p));height:calc(8.6*var(--p));border-radius:50%;background:#fff;color:#065238;
+  display:flex;align-items:center;justify-content:center;font-size:calc(5.4*var(--p));font-weight:700}
+.lb-qr{position:relative;flex:0 0 auto;align-self:flex-end;margin-bottom:5cqh;width:75cqh;height:77.5cqh;background:#fff;border-radius:5cqh;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4.9cqh;color:#065238}
 .lb-cat{position:absolute;left:50%;top:-17.5cqh;width:35cqh;transform:translateX(-50%)}
 .lb-qr b{font-size:max(5.5cqh,0.75rem);line-height:1;margin-bottom:3.6cqh;white-space:nowrap}
 .lb-qr img{width:46.3cqh;height:46.3cqh}
 .lb-qr small{font-size:max(3.7cqh,0.65rem);font-weight:700;color:#009b63;margin-top:3.2cqh;line-height:1;white-space:nowrap}
-/* 橫幅被壓得很矮時（字會小於 12px），先收掉兩行說明文字 */
-@container lbbox (max-height:17rem){
-  .line-banner .lb-note{display:none}
-  .lb-main{--u:1.22cqh}   /* 說明收掉後多出來的高度，讓標題、按鈕、標籤放大填滿 */
-}
-/* 橫幅寬度 < 860px：直排、字級改用固定值，確保手機看得清楚 */
+/* 橫幅寬度 < 860px（平板直向、手機）：直排、字級改用固定值；QR 隱藏（手機掃不到自己的螢幕） */
 @container lb (max-width:859px){
-  .lb{container-type:normal;height:auto;border-radius:1rem;padding:1.1rem 1.25rem 1.1rem}
+  .lb{container-type:normal;height:auto;border-radius:1rem}
   .lb::before{width:14rem;height:14rem;right:-5rem;top:-8rem}
   .lb::after{width:9rem;height:9rem;left:-4rem;bottom:-6rem}
-  .lb-ring,.lb-qr,.lb-scan{display:none}   /* 手機沒有 QR，「掃描後…」那句也一起藏 */
-  .lb-main{position:relative;left:auto;top:auto;bottom:auto}
+  .lb-ring,.lb-qr,.lb-perks{display:none}   /* 手機用簡單版：只留標題＋橘色按鈕；QR 掃不到自己的螢幕 */
+  .lb-row{position:relative;inset:auto;flex-direction:column;align-items:stretch;padding:1.1rem 1.1rem 1.15rem}
   .lb-title{font-size:clamp(1.6rem,8cqi,2.5rem);margin-bottom:0.6rem;letter-spacing:.05em}
-  .lb-cta{height:auto;padding:0.5rem 0.9rem 0.5rem 1.15rem;gap:0.7rem;font-size:clamp(1rem,4.3cqi,1.2rem)}
-  .lb-cta svg{width:1.1em;height:1.1em}
-  .lb-chips{flex-wrap:wrap;gap:0.4rem;margin-top:0.75rem}
-  .lb-chips li{height:auto;padding:0.35rem 0.6rem;gap:0.3rem;border-radius:0.5rem;font-size:clamp(0.8rem,3.5cqi,1rem)}
-  .lb-chips svg{width:1em;height:1em}
-  .line-banner .lb-note{margin-top:0.7rem;font-size:clamp(0.8rem,3.3cqi,0.9375rem)}
+  .lb-cta{align-self:flex-start;height:auto;padding:0.55rem 0.6rem 0.55rem 1.05rem;gap:0.55rem;font-size:clamp(0.95rem,4.3cqi,1.2rem)}
+  .lb-cta .lb-line-ico{width:1.6em;height:1.6em}
 }
-/* 手機螢幕太矮、預約按鈕還是擠不進第一屏時，JS 會在 <html> 依序加上 fit1 → fit5 */
-.fit1 .line-banner .lb-note{display:none}
-.fit2 .lb-chips{display:none}
-.fit3 .hero .eyebrow{display:none}
-.fit4 .topbar .tb-addr{display:none}
-.fit5 .hero p{font-size:0.875rem;line-height:1.6;margin-bottom:0.875rem}
+/* 手機螢幕太矮、預約按鈕還是擠不進第一屏時，JS 會在 <html> 依序加上 fit1 → fit3 */
+.fit1 .hero .eyebrow{display:none}
+.fit2 .topbar .tb-addr{display:none}
+.fit3 .hero p{font-size:0.875rem;line-height:1.6;margin-bottom:0.875rem}
 </style>
 </head>
 <body>
@@ -416,15 +416,21 @@ footer a{color:#e8efe9}
       <a class="line-banner" id="line-banner" href="#" target="_blank" rel="noopener" aria-label="加入晨昕診所 LINE 好友">
        <div class="lb">
         <span class="lb-ring r1"></span><span class="lb-ring r2"></span>
+       <div class="lb-row">
         <div class="lb-main">
           <span class="lb-title">好友募集中！</span>
-          <span class="lb-cta">點擊加入Line好友<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="12" cy="12" r="4.2" fill="#fff"/></svg></span>
-          <ul class="lb-chips">
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#009b63"/><path d="m5.6 10.3 3 3 5.8-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>線上掛號</li>
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#009b63"/><path d="m5.6 10.3 3 3 5.8-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>掛號查詢</li>
-            <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#009b63"/><path d="m5.6 10.3 3 3 5.8-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>接收診所最新資訊</li>
-          </ul>
-          <p class="lb-note"><span class="lb-scan">掃描後手機驗證、收到綁定成功通知，立即加入！<br></span>再也不怕忘記看診時間，輕鬆接收診所新訊！</p>
+          <span class="lb-cta">點擊右下角LINE圖示加好友<span class="lb-line-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.02 3.58 7.39 8.42 8.03.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.89.56 1.09-.46 5.87-3.46 8.01-5.92C21.5 13.4 22 11.83 22 10.13 22 5.64 17.52 2 12 2ZM8.3 12.6H6.4c-.28 0-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.3h1.4c.28 0 .5.22.5.5s-.22.5-.5.5Zm2-.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.8Zm4.5 0c0 .22-.14.4-.34.47a.5.5 0 0 1-.16.03.5.5 0 0 1-.4-.2l-1.95-2.65v2.35c0 .28-.22.5-.5.5s-.5-.22-.5-.5V8.3c0-.22.14-.4.34-.47a.5.5 0 0 1 .56.17l1.95 2.65V8.3c0-.28.22-.5.5-.5s.5.22.5.5v3.8Zm3-2.4c.28 0 .5.22.5.5s-.22.5-.5.5h-1.4v.9h1.4c.28 0 .5.22.5.5s-.22.5-.5.5h-1.9c-.28 0-.5-.22-.5-.5V8.3c0-.28.22-.5.5-.5h1.9c.28 0 .5.22.5.5s-.22.5-.5.5h-1.4v.9h1.4Z"/></svg></span></span>
+        </div>
+        <div class="lb-perks">
+          <div class="lb-perks-in">
+            <div class="lb-perks-h">加入LINE好友並通過手機驗證立即享有</div>
+            <ol>
+              <li>線上掛號</li>
+              <li>掛號查詢</li>
+              <li>領藥、抽血提醒</li>
+              <li>診所最新資訊</li>
+            </ol>
+          </div>
         </div>
         <div class="lb-qr">
         <svg class="lb-cat" viewBox="0 0 140 90" aria-hidden="true">
@@ -442,6 +448,7 @@ footer a{color:#e8efe9}
           <img src="images/line-qr.svg" alt="晨昕診所 LINE 加好友 QR Code" width="200" height="200">
           <small>LINE ID：@598wqthm</small>
         </div>
+       </div>
        </div>
       </a>
     </div>
@@ -672,8 +679,7 @@ function initStatic(){
          CSS 用 100svh − --lb-other 決定橫幅高度。這個量測值跟螢幕高度無關，
          所以視窗拉高拉矮不用重算，CSS 自己會跟著變。
    手機：橫幅是直排、高度跟內容走，放不下時依序收掉
-         說明文字(fit1) → 功能標籤(fit2) → 英文小標(fit3)
-         → 頁首地址(fit4，頁尾與聯絡我們仍有) → 介紹文字縮小(fit5)。
+         英文小標(fit1) → 頁首地址(fit2，頁尾與聯絡我們仍有) → 介紹文字縮小(fit3)。
    只在「寬度改變」時重算：手機捲動時網址列伸縮會改變高度，不能跟著跳。
    ============================================================ */
 const FIT_GAP = 16;   /* 按鈕底下至少留的空白（px） */
@@ -683,7 +689,7 @@ function fitHero(){
   if(!home || !home.classList.contains('show') || !box || !btn) return;
   const docBottom = el => el.getBoundingClientRect().bottom + window.scrollY;
 
-  const FITS = ['fit1','fit2','fit3','fit4','fit5'];
+  const FITS = ['fit1','fit2','fit3'];
   root.classList.remove(...FITS);
   const other = docBottom(btn) - box.getBoundingClientRect().height + FIT_GAP;
   const prev = root.style.getPropertyValue('--lb-other');
@@ -830,6 +836,7 @@ function renderArticle(slug){
     <div class="cats">${tagsOf(a).map(t=>`<span class="cat">${esc(t)}</span>`).join('')}</div>
     <h1>${esc(a.title)}</h1>
     <div class="meta">${esc(a.author)}　·　建立日期：${esc(a.date)}</div>
+    ${coverHTML(a)}
     <div class="article-body">${a.html}</div>
     <div class="share">
       <div class="lbl">分享這篇文章</div>
@@ -853,6 +860,13 @@ function renderArticle(slug){
     </div>
     <a class="back-link" onclick="go('news')">← 回文章列表</a>`;
   document.title = a.title + '｜晨昕診所';
+}
+
+/* 後台「封面圖」只在列表卡片用過，內頁從來沒顯示 → 補在標題下方。
+   內文已經放了同一張圖就不重複。 */
+function coverHTML(a){
+  if(!a.thumbnail || (a.html||'').includes(a.thumbnail)) return '';
+  return `<figure class="article-cover"><img src="${esc(a.thumbnail)}" alt="${esc(a.title)}"></figure>`;
 }
 
 function copyLink(url){
