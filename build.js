@@ -303,12 +303,14 @@ const OG_END = '<!--OG:END-->';
 
 function headerHtml() {
   return '<div class="topbar">\n' +
-    '  <div class="wrap">\n' +
+    '  <div class="wrap-wide">\n' +
     '    <span>📞 <a href="tel:' + esc(SITE.phoneLink) + '">' + esc(SITE.phone) + '</a>　' + esc(SITE.address) + '</span>\n' +
-    '    <span><a href="' + esc(safeUrl(SITE.facebook)) + '" target="_blank" rel="noopener">Facebook 粉絲專頁</a>　|　<a href="' + esc(safeUrl(SITE.line)) + '" target="_blank" rel="noopener">LINE 加好友</a></span>\n' +
+    '    <span><a href="' + esc(safeUrl(SITE.facebook)) + '" target="_blank" rel="noopener">Facebook 粉絲專頁</a>　|　<a class="tb-booking" href="' + esc(safeUrl(SITE.booking)) + '" target="_blank" rel="noopener">線上預約</a></span>\n' +
     '  </div>\n</div>\n' +
-    '<header>\n  <div class="wrap nav">\n' +
+    '<header>\n  <div class="wrap-wide nav">\n' +
     '    <a class="brand" href="/#home"><img class="logo" src="/images/logo.png" alt="' + esc(SITE.name) + ' Logo">' + esc(SITE.name) + '</a>\n' +
+    /* 手機版選單按鈕：之前文章頁/公告頁沒有這顆，手機上選單會整個消失 */
+    '    <button class="burger" onclick="this.nextElementSibling.classList.toggle(\'open\')" aria-label="選單">☰</button>\n' +
     '    <ul class="menu">\n' +
     '      <li><a href="/#home">首頁</a></li>\n' +
     '      <li><a href="/notices/">診所公告</a></li>\n' +
@@ -321,8 +323,8 @@ function footerHtml() {
   return '<footer>\n  <div class="wrap">\n' +
     '    <div class="brand"><img class="logo" src="/images/logo.png" alt="">' + esc(SITE.name) + '</div>\n' +
     '    <p>' + esc(SITE.address) + '</p>\n' +
-    '    <p style="margin-top:8px"><a href="' + esc(safeUrl(SITE.facebook)) + '" target="_blank" rel="noopener">Facebook</a>　|　<a href="' + esc(safeUrl(SITE.line)) + '" target="_blank" rel="noopener">LINE</a>　|　<a href="' + esc(safeUrl(SITE.booking)) + '" target="_blank" rel="noopener">線上預約</a></p>\n' +
-    '    <p style="margin-top:14px;font-size:12.5px;color:#8fa79c">© ' + esc(SITE.name) + ' All Rights Reserved.</p>\n' +
+    '    <p style="margin-top:0.5rem"><a href="' + esc(safeUrl(SITE.facebook)) + '" target="_blank" rel="noopener">Facebook</a>　|　<a href="' + esc(safeUrl(SITE.line)) + '" target="_blank" rel="noopener">LINE</a>　|　<a href="' + esc(safeUrl(SITE.booking)) + '" target="_blank" rel="noopener">線上預約</a></p>\n' +
+    '    <p style="margin-top:0.875rem;font-size:0.7812rem;color:#8fa79c">© ' + esc(SITE.name) + ' All Rights Reserved.</p>\n' +
     '  </div>\n</footer>';
 }
 function shareHtml(url, title) {
