@@ -327,13 +327,21 @@ function footerHtml() {
     '    <p style="margin-top:0.875rem;font-size:0.7812rem;color:#8fa79c">© ' + esc(SITE.name) + ' All Rights Reserved.</p>\n' +
     '  </div>\n</footer>';
 }
+/* 分享按鈕的圖示（跟首頁內的文章頁同一組；之前獨立文章頁沒有圖示） */
+const SHARE_ICONS = {
+  threads: '<svg viewBox="0 0 24 24"><path d="M12.2 24h-.01c-3.58-.02-6.33-1.2-8.19-3.51C2.35 18.44 1.5 15.59 1.47 12v-.01c.03-3.58.88-6.43 2.53-8.48C5.86 1.2 8.61.02 12.19 0h.02c2.74.02 5.04.72 6.82 2.1 1.68 1.3 2.86 3.14 3.51 5.49l-2.04.57c-1.1-3.98-3.9-6.01-8.3-6.04-2.91.02-5.11.93-6.53 2.7C4.33 6.48 3.65 8.87 3.62 12c.03 3.13.71 5.52 2.05 7.18 1.42 1.77 3.62 2.68 6.53 2.7 2.62-.02 4.36-.64 5.8-2.08 1.65-1.64 1.62-3.66 1.09-4.89-.31-.72-.88-1.32-1.63-1.78-.19 1.4-.62 2.53-1.29 3.38-.89 1.14-2.16 1.76-3.77 1.85-1.22.07-2.4-.22-3.31-.82-1.08-.7-1.71-1.78-1.78-3.02-.13-2.45 1.83-4.21 4.87-4.39.9-.05 1.75-.01 2.53.12-.1-.62-.31-1.12-.62-1.48-.43-.49-1.09-.74-1.97-.75h-.03c-.71 0-1.67.2-2.28 1.11l-1.71-1.15c.95-1.42 2.5-2.2 4.02-2.2h.05c2.87.02 4.58 1.78 4.75 4.85l.01.17c.51.22.99.49 1.4.81 1.05.81 1.79 1.87 2.15 3.06.5 1.68.55 4.41-1.61 6.57-1.86 1.85-4.12 2.68-7.32 2.71zm.9-10.83c-.2 0-.4 0-.61.02-1.55.09-2.94.79-2.87 2.19.04.73.42 1.31 1.07 1.73.55.36 1.28.54 2.03.5 1.04-.06 1.81-.42 2.36-1.12.44-.56.74-1.35.89-2.36-.86-.19-1.83-.29-2.87-.29z"/></svg>',
+  fb: '<svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>',
+  line: '<svg viewBox="0 0 24 24"><path d="M19.37 4.43C17.4 2.6 14.8 1.6 12 1.6 6.16 1.6 1.4 5.53 1.4 10.36c0 4.33 3.77 7.96 8.86 8.65.34.07.81.23.93.52.11.27.07.68.04.95l-.15.9c-.05.27-.21 1.06.93.58 1.14-.48 6.16-3.63 8.4-6.21 1.55-1.7 2.19-3.43 2.19-5.39 0-2.24-1.09-4.3-3.23-5.93zM7.65 13.16H5.5c-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v3.71h1.58c.32 0 .57.26.57.57 0 .31-.25.56-.57.56zm2.19-.56c0 .31-.25.56-.57.56-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v4.28zm5.14 0c0 .24-.16.46-.39.53-.06.02-.12.03-.18.03-.18 0-.34-.08-.45-.22l-2.19-2.97v2.63c0 .31-.25.56-.57.56-.31 0-.57-.25-.57-.56V8.32c0-.24.16-.46.39-.53.06-.02.12-.03.18-.03.18 0 .34.08.45.22l2.19 2.98V8.32c0-.31.26-.57.57-.57.32 0 .57.26.57.57v4.28zm3.46-2.71c.31 0 .57.25.57.57 0 .31-.26.56-.57.56h-1.59v1.02h1.59c.31 0 .57.26.57.57 0 .31-.26.56-.57.56h-2.16c-.31 0-.57-.25-.57-.56V8.32c0-.31.26-.57.57-.57h2.16c.31 0 .57.26.57.57 0 .32-.26.57-.57.57h-1.59v1z"/></svg>',
+  copy: '<svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>'
+};
 function shareHtml(url, title) {
   const u = encodeURIComponent(url), t = encodeURIComponent(title);
   return '<div class="share">\n  <div class="lbl">分享這篇文章</div>\n  <div class="share-btns">\n' +
-    '    <a class="sbtn threads" target="_blank" rel="noopener" href="https://www.threads.net/intent/post?text=' + t + '%0A' + u + '">Threads</a>\n' +
-    '    <a class="sbtn fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>\n' +
-    '    <a class="sbtn line" target="_blank" rel="noopener" href="https://social-plugins.line.me/lineit/share?url=' + u + '&amp;text=' + t + '">LINE</a>\n' +
-    '    <button class="sbtn copy" onclick="navigator.clipboard.writeText(location.href);this.textContent=\'已複製\'">複製連結</button>\n' +
+    '    <a class="sbtn threads" target="_blank" rel="noopener" href="https://www.threads.net/intent/post?text=' + t + '%0A' + u + '">' + SHARE_ICONS.threads + 'Threads</a>\n' +
+    '    <a class="sbtn fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">' + SHARE_ICONS.fb + 'Facebook</a>\n' +
+    '    <a class="sbtn line" target="_blank" rel="noopener" href="https://social-plugins.line.me/lineit/share?url=' + u + '&amp;text=' + t + '">' + SHARE_ICONS.line + 'LINE</a>\n' +
+    /* 按下後只改文字那一段，圖示保留 */
+    '    <button class="sbtn copy" onclick="navigator.clipboard.writeText(location.href);this.lastElementChild.textContent=\'已複製\'">' + SHARE_ICONS.copy + '<span>複製連結</span></button>\n' +
     '  </div>\n</div>';
 }
 
