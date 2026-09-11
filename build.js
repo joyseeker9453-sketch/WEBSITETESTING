@@ -154,7 +154,13 @@ function inline(s) {
     .replace(/~~([^~]+)~~/g, '<del>$1</del>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => slots[i]);
+  /* 佔位符可能一層包一層（例如連結文字裡有圖片或跳脫字元），要還原到完全沒有佔位符為止；
+     只還原一次的話，連結裡的圖片會消失、文字中間會夾著看不見的控制字元 */
+  let res = out;
+  for (let n = 0; n < 5 && /\u0000\d+\u0000/.test(res); n++) {
+    res = res.replace(/\u0000(\d+)\u0000/g, (_, i) => slots[i]);
+  }
+  return res;
 }
 function mdToHtml(md) {
   const blocks = md.split(/\r?\n\r?\n+/);
