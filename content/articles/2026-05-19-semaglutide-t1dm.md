@@ -1,7 +1,9 @@
 ---
 title: 司美格魯肽除了對肥胖的第二型糖尿病患者有幫助外，對第一型糖尿病的肥胖患者也能帶來什麼幫助嗎？
 date: 2026-05-19
-category: 體重管理
+category:
+  - 體重管理
+  - 第一型糖尿病
 author: 李泳姿 院長
 excerpt: 總結來說，第一型糖尿病患者使用semglutide，能快速減低餐前胰島素用量，這種效應是獨立於體重減輕帶來的胰島素用量下降。
 thumbnail: /images/uploads/01KRZ0HZH7QPFDJ0CSZKYTBQG8___webp_1555_1145.webp
