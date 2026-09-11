@@ -41,7 +41,7 @@ collections:
 
   # ---------- 診所資料（門診時間 / 醫療團隊 / 聯絡方式） ----------
   - name: "site"
-    label: "診所資料"
+    label: "診所資料(醫生資訊、開診時間)"
     files:
       - name: "site"
         label: "診所基本資料"
